@@ -11,14 +11,14 @@ using NBD2024.Data;
 namespace NBD2024.Data.NBDMigrations
 {
     [DbContext(typeof(NBDContext))]
-    [Migration("20240304205342_Initial")]
+    [Migration("20240305120510_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.15");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.16");
 
             modelBuilder.Entity("NBD2024.Models.Bid", b =>
                 {

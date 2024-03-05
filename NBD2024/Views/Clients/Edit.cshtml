@@ -49,8 +49,15 @@
                 <span asp-validation-for="AddressStreet" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Province:</label>
+                <select class="form-control" id="ProvinceID" name="ProvinceID" asp-items="ViewBag.ProvinceID">
+                </select>
+            </div>
+            <div class="form-group">
                 <label asp-for="CityID" class="control-label"></label>
-                <select asp-for="CityID" class="form-control" asp-items="ViewBag.CityID"></select>
+                <select asp-for="CityID" class="form-control" asp-items="ViewBag.CityID">
+                    <option value="0">Select a Province First</option>
+                </select>
                 <span asp-validation-for="CityID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -71,4 +78,13 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/multiselect.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+        $('#ProvinceID').change(function () {
+            var selectedProvince = $("#ProvinceID").val();
+            var URL = "/Clients/GetCities/?ProvinceID=" + selectedProvince;
+            refreshDDL('CityID', URL, true, 'Select a Province with Cities first', false, null, true);
+        });
+    </script>
 }

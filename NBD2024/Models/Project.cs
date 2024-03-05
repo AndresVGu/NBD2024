@@ -8,6 +8,15 @@ namespace NBD2024.Models
 
         //Summary Properties By Andres Villarreal
         #region Summary Properties
+        [Display(Name ="Summary")]
+        public string Summary
+        {
+            get
+            {
+                return $"{ProjectName} ,{ProjectSite}";
+            }
+        }
+
         //Start Date Summary
         [Display(Name = "Date")]
         public string StartDateSummary

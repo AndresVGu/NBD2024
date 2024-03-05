@@ -24,19 +24,23 @@
             <div class="card card-body bg-light">
                 <!--Filters-->
                 <div class="row">
-                    <!--Select by client
-
-                    <div class="form-group col-md-4">
-                        <label class="control-label">Select by Contact:</label>
-                        //Html.DropDownList("CityID", null, "All Cities",
-                           //htmlAttributes: new { class = "form-control" })
-                    </div>
-                    -->
+                    
+                    
                     <!--Select by string-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Client:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="E.g.Name/Company/Phone/Address/City " })
                     </div>
+
+                    <!--Select by Province
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Select by Province:</label>
+                        Html.DropDownList("ProvinceID", null, "Select Provinces",
+                                 htmlAttributes: new { class = "form-control" })
+                    </div>
+                    -->
+
                     <!--Button-->
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-success" data-bs-toggle="tooltip" title="Apply filters" />
@@ -52,29 +56,24 @@
         <thead>
             <tr class="table-primary">
                 <th>
-                    <input type="submit" name="actionButton" value="Client" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by client" />
-                    <!--
-                    @Html.DisplayNameFor(model => model.CompanyName)
-                    -->
+                    <input type="submit" name="actionButton" value="Client" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Client Name" />
+                    
+                </th>
+
+                <th>
+                    <input type="submit" name="actionButton" value="Company" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by Company Name" />
 
                 </th>
 
                 <th>
-                    <input type="submit" name="actionButton" value="City" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by city" />
+                    <input type="submit" name="actionButton" value="City" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by City" />
 
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="Province" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by province" />
+                    <input type="submit" name="actionButton" value="Phone" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by Phone Number" />
 
                 </th>
-
-                <th>
-                    <input type="submit" name="actionButton" value="Contact" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by contact name" />
-
-                </th>
-                <th>
-                    <input type="submit" name="actionButton" value="Phone" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by phone number" />
-                </th>
+                
                 <th></th>
             </tr>
         </thead>
@@ -83,18 +82,17 @@
             @foreach (var item in Model)
             {
                 <tr>
+
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FormalName)
+                    </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.CompanyName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.City.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City.Province.Name)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FormalName)
+                        @Html.DisplayFor(modelItem => item.City.Summary)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PhoneFormatted)
@@ -116,6 +114,13 @@
 </form>
 
 @section Scripts {
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $('#SearchClient').autocomplete({
+            minLength: 1,
+            source: '@Url.Action("GetClients", "Client")'
+        });
+    </script>
     <!--Tooltips-->
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
