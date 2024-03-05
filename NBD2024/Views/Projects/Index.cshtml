@@ -1,0 +1,110 @@
+﻿@model IEnumerable<NBD2024.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Projects</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Create a new project">Create New</a>
+</p>
+
+<!--Filtering Form-->
+<form asp-action="Index" method="get">
+    <div class="form-horizontal">
+        <button class="btn @ViewData["Filtering"]" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            Filter/Search @ViewData["numberFilters"]
+        </button><br /><br />
+        <div class="collapse @ViewData["ShowFilter"]" id="collapseFilter">
+            <div class="card card-body bg-light">
+                <!--Filters-->
+                <div class="row">
+                    <!--Select by client
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Select by Client:</label>
+                        //Html.DropDownList("ClientID", null, "All Clients",
+                                 htmlAttributes: new { class = "form-control" })
+                    </div>
+
+                    -->
+                    <!--Select by string-->
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Search Project:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                    <!--Button-->
+                    <div class="form-group col-md-4 align-self-end">
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-success" data-bs-toggle="tooltip" title="Apply filters" />
+                        <a asp-action="Index" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Clear all filters">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th>
+                    <input type="submit" name="actionButton" value="BidDate" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by bid date" />
+
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="BeginDate" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by begin date" />
+
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="CompleteDate" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by complete date" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="ProjectSite" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by project site" />
+                </th>
+
+                <th>
+                    <input type="submit" name="actionButton" value="City" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by city" />
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BidDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectSite)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning" fdprocessedid="t6a41e" data-bs-toggle="tooltip" title="Edit Project">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info" fdprocessedid="rpbgq" data-bs-toggle="tooltip" title="Project Details">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger" fdprocessedid="a09td" data-bs-toggle="tooltip" title="Delete Project">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PagingNavBar" />
+</form>
+@section Scripts {
+    <!--Tooltips-->
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
