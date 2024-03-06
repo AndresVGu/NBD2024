@@ -19,16 +19,29 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Bid", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClientID")
+                    b.Property<DateTime>("BidDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("LabourID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.Property<int>("MaterialID")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("ClientID");
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LabourID");
+
+                    b.HasIndex("MaterialID");
+
+                    b.HasIndex("ProjectID");
 
                     b.ToTable("Bids");
                 });
@@ -125,8 +138,17 @@ namespace NBD2024.Data.NBDMigrations
                         .HasMaxLength(80)
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("StandardCharge")
+                    b.Property<double>("Price")
                         .HasColumnType("REAL");
+
+                    b.Property<double>("PurchasePrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("type")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
@@ -138,7 +160,7 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Labour", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -155,15 +177,9 @@ namespace NBD2024.Data.NBDMigrations
                     b.Property<double>("LabourUnitPrice")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("ProjectID")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("ID");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("LabourTypeID", "ProjectID")
-                        .IsUnique();
+                    b.HasIndex("LabourTypeID");
 
                     b.ToTable("Labours");
                 });
@@ -193,11 +209,8 @@ namespace NBD2024.Data.NBDMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Area")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("ClientID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("InventoryID")
                         .HasColumnType("INTEGER");
@@ -205,23 +218,12 @@ namespace NBD2024.Data.NBDMigrations
                     b.Property<double>("PerYardCharge")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("ProjectID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ProyectID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ClientID");
-
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("InventoryID", "ProyectID")
-                        .IsUnique();
+                    b.HasIndex("InventoryID");
 
                     b.ToTable("Materials");
                 });
@@ -255,10 +257,7 @@ namespace NBD2024.Data.NBDMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("BidDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("CityID")
+                    b.Property<int?>("CityID")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ClientID")
@@ -361,13 +360,29 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Bid", b =>
                 {
-                    b.HasOne("NBD2024.Models.Client", "Client")
+                    b.HasOne("NBD2024.Models.Labour", "Labour")
                         .WithMany()
-                        .HasForeignKey("ClientID")
+                        .HasForeignKey("LabourID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.HasOne("NBD2024.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NBD2024.Models.Project", "Project")
+                        .WithMany("Bids")
+                        .HasForeignKey("ProjectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Labour");
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("NBD2024.Models.City", b =>
@@ -393,45 +408,23 @@ namespace NBD2024.Data.NBDMigrations
             modelBuilder.Entity("NBD2024.Models.Labour", b =>
                 {
                     b.HasOne("NBD2024.Models.LabourType", "LabourType")
-                        .WithMany("Labours")
+                        .WithMany()
                         .HasForeignKey("LabourTypeID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("NBD2024.Models.Project", "Project")
-                        .WithMany("Labour")
-                        .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LabourType");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("NBD2024.Models.Material", b =>
                 {
-                    b.HasOne("NBD2024.Models.Client", "Client")
-                        .WithMany("Materials")
-                        .HasForeignKey("ClientID")
+                    b.HasOne("NBD2024.Models.Inventory", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NBD2024.Models.Inventory", "Inventory")
-                        .WithMany("Materials")
-                        .HasForeignKey("InventoryID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("NBD2024.Models.Project", "Project")
-                        .WithMany("Material")
-                        .HasForeignKey("ProjectID");
-
-                    b.Navigation("Client");
-
                     b.Navigation("Inventory");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("NBD2024.Models.Position", b =>
@@ -457,9 +450,7 @@ namespace NBD2024.Data.NBDMigrations
                 {
                     b.HasOne("NBD2024.Models.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityID");
 
                     b.HasOne("NBD2024.Models.Client", "Client")
                         .WithMany("Projects")
@@ -479,26 +470,12 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Client", b =>
                 {
-                    b.Navigation("Materials");
-
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("NBD2024.Models.Inventory", b =>
-                {
-                    b.Navigation("Materials");
-                });
-
-            modelBuilder.Entity("NBD2024.Models.LabourType", b =>
-                {
-                    b.Navigation("Labours");
                 });
 
             modelBuilder.Entity("NBD2024.Models.Project", b =>
                 {
-                    b.Navigation("Labour");
-
-                    b.Navigation("Material");
+                    b.Navigation("Bids");
 
                     b.Navigation("Positions");
                 });

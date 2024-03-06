@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NBD2024.Data;
 using NBD2024.Models;
+using NBD2024.CustomControllers;
 
 namespace NBD2024.Controllers
 {
-    public class InventoriesController : Controller
+    public class InventoriesController : LookupsController
     {
         private readonly NBDContext _context;
 
@@ -22,7 +23,8 @@ namespace NBD2024.Controllers
         // GET: Inventories
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Inventories.ToListAsync());
+               //View(await _context.Inventories.ToListAsync());
+             return Redirect(ViewData["returnURL"].ToString());
         }
 
         // GET: Inventories/Details/5
@@ -56,11 +58,19 @@ namespace NBD2024.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,StandardCharge")] Inventory inventory)
         {
+            try
+            {
+
             if (ModelState.IsValid)
             {
                 _context.Add(inventory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Redirect(ViewData["returnURL"].ToString());
+            }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
             return View(inventory);
         }
@@ -88,6 +98,39 @@ namespace NBD2024.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,StandardCharge")] Inventory inventory)
         {
+            var inventoryToUpdate = await _context.Inventories
+                .FirstOrDefaultAsync(i => i.ID == id);
+            
+            if(inventoryToUpdate == null)
+            {
+                return NotFound();
+            }
+            if(await TryUpdateModelAsync<Inventory>(inventoryToUpdate, ""
+             ))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InventoryExists(inventoryToUpdate.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(inventoryToUpdate);
+            /*
             if (id != inventory.ID)
             {
                 return NotFound();
@@ -113,7 +156,7 @@ namespace NBD2024.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(inventory);
+            return View(inventory);*/
         }
 
         // GET: Inventories/Delete/5
@@ -143,14 +186,33 @@ namespace NBD2024.Controllers
             {
                 return Problem("Entity set 'NBDContext.Inventories'  is null.");
             }
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventories
+                .FirstOrDefaultAsync(i => i.ID == id);
+                
+            try
+            {
+
             if (inventory != null)
             {
                 _context.Inventories.Remove(inventory);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                return Redirect(ViewData["returnURL"].ToString());
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete " + ViewData["ControllerFriendlyName"] +
+                        ". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] + " that has related records.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(inventory);
         }
 
         private bool InventoryExists(int id)

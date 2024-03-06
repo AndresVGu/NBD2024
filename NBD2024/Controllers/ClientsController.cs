@@ -23,7 +23,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients
-        public async Task<IActionResult> Index(string SearchString, int? ProvinceID,
+        public async Task<IActionResult> Index(string SearchString, int? CityID,
            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Client")
         {
 
@@ -44,9 +44,10 @@ namespace NBD2024.Controllers
 
             #region Filters
             //filters:
-            if (ProvinceID.HasValue)
+            if (CityID.HasValue)
             {
-                //clients = clients.Where(c => c.City.Any((ProvinceID.ToString()));
+                clients = clients.Where(c => c.CityID == CityID);
+                
                 numberFilters++;
             }
             if (!String.IsNullOrEmpty(SearchString))
@@ -174,7 +175,7 @@ namespace NBD2024.Controllers
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
             var pagedData = await PaginatedList<Client>.CreateAsync(clients.AsNoTracking(), page ?? 1, pageSize);
-
+            PopulateFilter();
             return View(pagedData);
         }
 
@@ -388,8 +389,9 @@ namespace NBD2024.Controllers
         {
             var query = from p in _context.Projects
                         where p.ClientID == id
-                        orderby p.StartTime
+                        orderby p.StartTime descending
                         select p;
+
             return PartialView("_ListOfProjects", query.ToList());
         }
         
@@ -408,10 +410,22 @@ namespace NBD2024.Controllers
             return new SelectList(query.OrderBy(c => c.Name), "ID", "Summary", selectedID);
         }
 
+        private SelectList CitiesSelectList(int? selectedId)
+        {
+            return new SelectList(_context.Cities
+                .OrderBy(c => c.Name)
+                , "ID", "Name", selectedId);
+        }
+        private void PopulateFilter (Client client = null)
+        {
+            ViewData["CityID"] = CitiesSelectList(client?.CityID);
+        }
         //Populate DropDownList: Check
         private void PopulateDropDownLists(Client client = null)
         {
-          if((client?.CityID).HasValue)
+            
+
+            if ((client?.CityID).HasValue)
             {
                 //Careful: CityID might have a value but the city object is missing
                 if(client.City == null)
@@ -424,7 +438,8 @@ namespace NBD2024.Controllers
             else
             {
                 ViewData["ProvinceID"] = ProvinceSelectList(null);
-                ViewData["CityID"] = CitySelectList(null, null); 
+                ViewData["CityID"] = CitySelectList(null, null);
+                
             }
         
         }

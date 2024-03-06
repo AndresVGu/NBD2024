@@ -17,11 +17,7 @@
                 <input asp-for="ProjectName" class="form-control" />
                 <span asp-validation-for="ProjectName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="BidDate" class="control-label"></label>
-                <input asp-for="BidDate" class="form-control" />
-                <span asp-validation-for="BidDate" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control" />
@@ -38,8 +34,28 @@
                 <span asp-validation-for="ProjectSite" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityID" class="control-label"></label>
-                <select asp-for="CityID" class ="form-control" asp-items="ViewBag.CityID"></select>
+                <label asp-for="ClientID" class="control-label"></label>
+                <select asp-for="ClientID" class="form-control" asp-items="ViewBag.ClientID">
+                    <option value="">Select a Client</option>
+                </select>
+                <span asp-validation-for="ClientID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Province*:</label>
+                <select class="form-control dropdown-toggle" id="ProvinceID" name="ProvinceID" asp-items="ViewBag.ProvinceID">
+
+                    <option value="0">Select Province  &#8883;</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityID" class="control-label">City*:</label>
+                <select asp-for="CityID" class="form-control" asp-items="ViewBag.CityID">
+                    <option value="0">
+                        Select a Province First &#8883;
+
+                    </option>
+                </select>
+                <span asp-validation-for="CityID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SetupNotes" class="control-label"></label>
@@ -59,5 +75,13 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/multiselect.js"></script>
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+        $('#ProvinceID').change(function () {
+            var selectedProvince = $("#ProvinceID").val();
+            var URL = "/Clients/GetCities/?ProvinceID=" + selectedProvince;
+            refreshDDL('CityID', URL, true, 'Select a Province with Cities first', false, null, true);
+        });
+    </script>
 }

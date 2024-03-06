@@ -13,6 +13,6 @@ namespace NBD2024.Models
         [StringLength(120, ErrorMessage = "Labour type cannot be more than 120 characters long.")]
         public string Name { get; set; }
 
-        public ICollection<Labour> Labours { get; set; } = new HashSet<Labour>();
+  ICollection<Labour> labours { get; set; } = new HashSet<Labour>();
     }
 }

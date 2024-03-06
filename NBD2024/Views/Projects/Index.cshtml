@@ -14,11 +14,7 @@
                 <!--Filters-->
 
                 <div class="row">
-                    <!--Select by client-->
-                    <div class="form-group col-md-4">
-                        <label class="control-label">Select by Clients:</label>
-                        @Html.DropDownList("ClientID", null, "All Clients", htmlAttributes: new { @class = "form-control" })
-                    </div>
+                   
                     
 
                     
@@ -26,6 +22,11 @@
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Project:</label>
                         @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                    <!--Select by client-->
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Select by Clients:</label>
+                        @Html.DropDownList("ClientID", null, "All Clients", htmlAttributes: new { @class = "form-control" })
                     </div>
                     <!--Button-->
                     <div class="form-group col-md-4 align-self-end">
@@ -89,7 +90,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.City.Summary)
                     </td>
-                    <td>
+                    <td class="text-center">
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-primary" fdprocessedid="t6a41e" data-bs-toggle="tooltip" title="Edit Project">&#x270E;</a>
                         <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-primary" fdprocessedid="rpbgq" data-bs-toggle="tooltip" title="Project Details">&#x1F50E;</a>
                         <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-outline-danger" fdprocessedid="a09td" data-bs-toggle="tooltip" title="Delete Project">&#x274C;</a>

@@ -22,6 +22,26 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Clients/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -76,6 +96,46 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Inventories/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3JpZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Labours/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3Vyc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Labours/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3Vyc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Labours/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3Vyc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Labours/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3Vyc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Labours/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3Vyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/LabourTypes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/LabourTypes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/LabourTypes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/LabourTypes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/LabourTypes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Materials/Create.cshtml]

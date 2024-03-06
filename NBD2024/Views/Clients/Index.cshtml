@@ -32,14 +32,14 @@
                         @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="E.g.Name/Company/Phone/Address/City " })
                     </div>
 
-                    <!--Select by Province
+                    <!--Select by Province -->
 
                     <div class="form-group col-md-4">
-                        <label class="control-label">Select by Province:</label>
-                        Html.DropDownList("ProvinceID", null, "Select Provinces",
-                                 htmlAttributes: new { class = "form-control" })
+                        <label class="control-label">Select by City:</label>
+                        @Html.DropDownList("CityID", null, "Select Cities",
+                                 htmlAttributes: new { @class = "form-control" })
                     </div>
-                    -->
+                    
 
                     <!--Button-->
                     <div class="form-group col-md-4 align-self-end">

@@ -1,12 +1,6 @@
 ﻿@model NBD2024.Models.Material
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h1>Create</h1>
-
-<h4>Material</h4>
+<partial name="_ViewHeading" />
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,15 +11,21 @@
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="ProyectID" class="control-label"></label>
-                <input asp-for="ProyectID" class="form-control" />
-                <span asp-validation-for="ProyectID" class="text-danger"></span>
-            </div>
+             
+       
+
+
+                <div class="form-group">
+                    <label asp-for="PerYardCharge" class="control-label"></label>
+                    <input asp-for="PerYardCharge" class="form-control" />
+                    <span asp-validation-for="PerYardCharge" class="text-danger"></span>
+                </div>
+           
             <div class="form-group">
                 <label asp-for="InventoryID" class="control-label"></label>
-                <select asp-for="InventoryID" class ="form-control" asp-items="ViewBag.InventoryID"></select>
+                <select asp-for="InventoryID" class="form-control" asp-items="ViewBag.InventoryID">
+                    <option value="">Select Item</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

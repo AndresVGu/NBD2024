@@ -24,7 +24,7 @@ namespace NBD2024.Controllers
 
         // GET: Projects
         public async Task<IActionResult> Index(string SearchString, int? ClientID,
-           int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "ProjectName")
+           int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "ClientID")
         {
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
@@ -49,7 +49,7 @@ namespace NBD2024.Controllers
             if (!String.IsNullOrEmpty(SearchString))
             {
                 projects = projects.Where(p => p.ProjectSite.ToUpper().Contains(SearchString.ToUpper())
-                            || p.BidDate.ToString().Contains(SearchString) || p.StartTime.ToString().Contains(SearchString)
+                           || p.StartTime.ToString().Contains(SearchString)
                             || p.EndTime.ToString().Contains(SearchString)
                             || p.Client.FirstName.ToUpper().Contains(SearchString.ToUpper())
                             || p.ProjectName.ToUpper().Contains(SearchString.ToUpper())
@@ -228,7 +228,7 @@ namespace NBD2024.Controllers
                 {
                     _context.Add(project);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", new {ProjectID = project.ID});
+                    return RedirectToAction("Details", new {project.ID});
                     //Deberia agragar una tabla ProjectMaterials
                     
                 }
@@ -266,6 +266,7 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
             PopulateDropDownLists(project);
+            PopulateCityDropDownLists(project);
             return View(project);
         }
 
@@ -287,8 +288,7 @@ namespace NBD2024.Controllers
             }
 
             if (await TryUpdateModelAsync<Project>(projectToUpdate, "",
-                p => p.ProjectName,
-                p => p.BidDate, p => p.StartTime, p => p.EndTime, p => p.CityID,
+                p => p.ProjectName, p => p.StartTime, p => p.EndTime, p => p.CityID,
                 p => p.ProjectSite, p => p.SetupNotes, p => p.ClientID))
             {
                 try

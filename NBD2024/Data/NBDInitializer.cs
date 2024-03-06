@@ -15,8 +15,8 @@ namespace NBD2024.Data
             try
             {
                 //Delete and recreate the Database with every restart
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+               // context.Database.EnsureDeleted();
+                //context.Database.EnsureCreated();
                 //context.Database.Migrate();
 
                 //To randomly generate data
@@ -196,65 +196,65 @@ namespace NBD2024.Data
                     new Project
                     {
                         ProjectName = "Project 1",
-                        BidDate = DateTime.Parse("2023-06-08"),
+                      
                         StartTime = DateTime.Parse("2023-06-15"),
                         EndTime = DateTime.Parse("2023-07-08"),
                         ProjectSite = "Back deck 1",
                         SetupNotes = "Notes here",
                        
-                        Material = context.Materials.ToList(),
+                     
                         ClientID = context.Clients.FirstOrDefault(c => c.FirstName == "Amy" && c.LastName == "Benson").ID
 
                     },
                      new Project
                      {
                          ProjectName = "Project 2",
-                         BidDate = DateTime.Parse("2023-06-08"),
+          
                          StartTime = DateTime.Parse("2023-06-15"),
                          EndTime = DateTime.Parse("2023-07-08"),
                          ProjectSite = "Back deck 1",
                          
                          SetupNotes = "Notes here",
-                         Material = context.Materials.ToList(),
+                        
                          ClientID = context.Clients.FirstOrDefault(c => c.ID == 2).ID
 
                      },
                       new Project
                       {
                           ProjectName = "Project 3",
-                          BidDate = DateTime.Parse("2023-06-08"),
+                  
                           StartTime = DateTime.Parse("2023-06-15"),
                           EndTime = DateTime.Parse("2023-07-08"),
                           ProjectSite = "Back deck 1",
                           
                           SetupNotes = "Notes here",
-                          Material = context.Materials.ToList(),
+                       
                           ClientID = context.Clients.FirstOrDefault(c => c.ID == 1).ID
 
                       },
                        new Project
                        {
                            ProjectName = "Project 4",
-                           BidDate = DateTime.Parse("2023-06-08"),
+                 
                            StartTime = DateTime.Parse("2023-06-15"),
                            EndTime = DateTime.Parse("2023-07-08"),
                            ProjectSite = "Back deck 4",
                            
                            SetupNotes = "Notes here",
-                           Material = context.Materials.ToList(),
+                          
                            ClientID = context.Clients.FirstOrDefault(c => c.ID == 2).ID
 
                        },
                         new Project
                         {
                             ProjectName = "Project 5",
-                            BidDate = DateTime.Parse("2023-06-08"),
+                 
                             StartTime = DateTime.Parse("2023-06-15"),
                             EndTime = DateTime.Parse("2023-07-08"),
                             ProjectSite = "Back deck 5",
-                           
+                             
                             SetupNotes = "Notes here",
-                            Material = context.Materials.ToList(),
+                            
                             ClientID = context.Clients.FirstOrDefault(c => c.ID == 3).ID
 
                         }
@@ -307,76 +307,35 @@ namespace NBD2024.Data
                 string[] baconNotes = new string[] { "Bacon ipsum dolor amet meatball corned beef kevin, alcatra kielbasa biltong drumstick strip steak spare ribs swine. Pastrami shank swine leberkas bresaola, prosciutto frankfurter porchetta ham hock short ribs short loin andouille alcatra. Andouille shank meatball pig venison shankle ground round sausage kielbasa. Chicken pig meatloaf fatback leberkas venison tri-tip burgdoggen tail chuck sausage kevin shank biltong brisket.", "Sirloin shank t-bone capicola strip steak salami, hamburger kielbasa burgdoggen jerky swine andouille rump picanha. Sirloin porchetta ribeye fatback, meatball leberkas swine pancetta beef shoulder pastrami capicola salami chicken. Bacon cow corned beef pastrami venison biltong frankfurter short ribs chicken beef. Burgdoggen shank pig, ground round brisket tail beef ribs turkey spare ribs tenderloin shankle ham rump. Doner alcatra pork chop leberkas spare ribs hamburger t-bone. Boudin filet mignon bacon andouille, shankle pork t-bone landjaeger. Rump pork loin bresaola prosciutto pancetta venison, cow flank sirloin sausage.", "Porchetta pork belly swine filet mignon jowl turducken salami boudin pastrami jerky spare ribs short ribs sausage andouille. Turducken flank ribeye boudin corned beef burgdoggen. Prosciutto pancetta sirloin rump shankle ball tip filet mignon corned beef frankfurter biltong drumstick chicken swine bacon shank. Buffalo kevin andouille porchetta short ribs cow, ham hock pork belly drumstick pastrami capicola picanha venison.", "Picanha andouille salami, porchetta beef ribs t-bone drumstick. Frankfurter tail landjaeger, shank kevin pig drumstick beef bresaola cow. Corned beef pork belly tri-tip, ham drumstick hamburger swine spare ribs short loin cupim flank tongue beef filet mignon cow. Ham hock chicken turducken doner brisket. Strip steak cow beef, kielbasa leberkas swine tongue bacon burgdoggen beef ribs pork chop tenderloin.", "Kielbasa porchetta shoulder boudin, pork strip steak brisket prosciutto t-bone tail. Doner pork loin pork ribeye, drumstick brisket biltong boudin burgdoggen t-bone frankfurter. Flank burgdoggen doner, boudin porchetta andouille landjaeger ham hock capicola pork chop bacon. Landjaeger turducken ribeye leberkas pork loin corned beef. Corned beef turducken landjaeger pig bresaola t-bone bacon andouille meatball beef ribs doner. T-bone fatback cupim chuck beef ribs shank tail strip steak bacon." };
 
                 #endregion
-                #region Add Random Projects
-                if (context.Projects.Count() < 5)
-                {
-                    string[] projectsNames = new string[]
-                    {
-                        "Garden Renovation",
-    "Backyard Oasis Design",
-    "Front Yard Transformation",
-    "Water Feature Installation",
-    "Xeriscaping Project",
-    "Outdoor Living Space Enhancement",
-    "Pathway and Walkway Redesign",
-    "Tree Planting and Maintenance",
-    "Native Plant Restoration",
-    "Terrace Garden Installation",
-    "Patio Extension and Design",
-    "Drought-Tolerant Landscape Overhaul",
-    "Zen Garden Creation",
-    "Perennial Flowerbed Installation",
-    "Rock Garden Construction",
-    "Fence and Gate Enhancement",
-    "Arbor and Pergola Installation",
-    "Sustainable Lawn Care Implementation",
-    "Vegetable and Herb Garden Setup",
-    "Outdoor Lighting Upgrade"
-                    };
 
-                    string[] projectSites = new string[]
-                    {
-                        "Residential Property",
-    "Commercial Office Park",
-    "Public Park",
-    "Shopping Mall",
-    "School Campus",
-    "Hospital Grounds",
-    "Hotel Courtyard",
-    "Restaurant Outdoor Dining Area",
-    "Golf Course",
-    "Apartment Complex",
-    "Industrial Complex",
-    "Government Building",
-    "Sports Stadium",
-    "Botanical Garden",
-    "Historical Site",
-    "Community Center",
-    "Campground",
-    "Theme Park",
-    "Highway Rest Stop",
-    "Airport Terminal"
-                    };
+                #region Add Random Projects
+                if (context.Projects.Count() < 6)
+                {
+                    string[] projectsNames = new string[]  { "Garden Renovation","Backyard Oasis Design","Front Yard Transformation", "Water Feature Installation",    "Xeriscaping Project",    "Outdoor Living Space Enhancement", "Pathway and Walkway Redesign",    "Tree Planting and Maintenance",    "Native Plant Restoration",    "Terrace Garden Installation",    "Patio Extension and Design",    "Drought-Tolerant Landscape Overhaul",   "Zen Garden Creation",    "Perennial Flowerbed Installation",    "Rock Garden Construction",    "Fence and Gate Enhancement",    "Arbor and Pergola Installation",    "Sustainable Lawn Care Implementation",    "Vegetable and Herb Garden Setup",    "Outdoor Lighting Upgrade"         };
+
+                    string[] projectSites = new string[]        {         "Residential Property",  "Commercial Office Park",    "Public Park",    "Shopping Mall",    "School Campus",    "Hospital Grounds",    "Hotel Courtyard",    "Restaurant Outdoor Dining Area",   "Golf Course",    "Apartment Complex",    "Industrial Complex",    "Government Building",    "Sports Stadium",    "Botanical Garden",    "Historical Site",    "Community Center",    "Campground",    "Theme Park",    "Highway Rest Stop",    "Airport Terminal"  };
                     DateTime startd = DateTime.Today;
                     DateTime firstdate = DateTime.Parse("2000-01-01");
+                    int projectsCount = projectsNames.Length;
                     int counter = 1;
 
-                    foreach (string projectSite in projectSites)
+                    foreach (string ln in projectSites)
                     {
                         HashSet<string> selectedNames = new HashSet<string>();
+
                         while (selectedNames.Count() < 5)
                         {
-                            selectedNames.Add(projectsNames[random.Next(projectsNames.Length)]);
+                            selectedNames.Add(projectsNames[random.Next(projectsCount)]);
                         }
 
-                        foreach (string projectsName in selectedNames)
+                        foreach (string fn in projectsNames)
                         {
                             Project project = new Project()
                             {
-                                ProjectName = projectsName,
-                                StartTime = firstdate.AddDays(-random.Next(60, 34675)),
-                                EndTime = startd.AddDays(-random.Next(60, 34675)),
-                                ProjectSite = projectSite,
+                                ProjectName = fn,
+                                StartTime = DateTime.Today.AddDays(-random.Next(1, 365)),
+                                EndTime = DateTime.Today.AddDays(random.Next(1,365)),
+                                ProjectSite = ln,
                                
                                 SetupNotes = baconNotes[random.Next(5)],
                                 ClientID = clientIDs[random.Next(clientIDCount)]
@@ -385,16 +344,13 @@ namespace NBD2024.Data
                             };
                             counter++;
                             context.Projects.Add(project);
-                            try
-                            {
-                                context.SaveChanges();
-                            }
-                            catch (Exception)
-                            {
-
-                            }
+                            
+                          
                         }
+                        
                     }
+                    context.SaveChanges();
+
 
                     string cmd = "DELETE FROM Clients WHERE NOT EXISTS(SELECT 1 FROM Projects WHERE Clients.Id = Projects.ClientID)";
                     context.Database.ExecuteSqlRaw(cmd);
@@ -431,12 +387,15 @@ namespace NBD2024.Data
                 {
                     double min = 5.0;
                     double max = 50.0;
+                    double maxx = 100.0;
                     foreach (string i in iventoryItems)
                     {
                         Inventory inventory = new Inventory()
                         {
                             Name = i,
-                            StandardCharge = random.NextDouble() * (max - min) + min
+                            Quantity = random.Next(1, 99),
+                            Price = random.NextDouble() * (maxx - min) + min,
+                            PurchasePrice = random.NextDouble() * (max - min) + min
                         };
                         context.Inventories.Add(inventory);
                     }
@@ -459,19 +418,18 @@ namespace NBD2024.Data
 
                     int k = 0;
                         double min = 1.0;
-                        double max = 70.0;
+                        double max = 15.0;
                         int howMany = random.Next(1, InventoryIDCount);
                     for(int j =1; j <= howMany; j++)
                     {
                         k = (k >= InventoryIDCount) ? 0 : k;
                         Material m = new Material()
                         {
-                            ProyectID = i,
+                            
                             InventoryID = InventoryIDs[k],
                             Quantity = random.Next(1,100),
-                            Area = random.NextDouble() * (max - min) + min,
-                            PerYardCharge = random.NextDouble() * (max - min) + min,
-                            ClientID = clientIDs[random.Next(clientIDCount)]
+                            Description = baconNotes[random.Next(5)],
+                            PerYardCharge = random.NextDouble() * (max - min) + min
 
 
                         };
@@ -479,6 +437,115 @@ namespace NBD2024.Data
                     }
                     context.SaveChanges();
                     }
+                }
+
+                //Seed Labour Types
+                string[] laboursTypes = new string[]
+                {
+                    "Lawn Mowing",
+    "Weeding",
+    "Hedge Trimming",
+    "Mulching",
+    "Planting",
+    "Pruning",
+    "Sodding",
+    "Aerating",
+    "Fertilizing",
+    "Watering",
+    "Leaf Removal",
+    "Edging",
+    "Seeding",
+    "Irrigation Installation",
+    "Tree Care",
+    "Landscape Design",
+    "Pest Control",
+    "Outdoor Lighting Installation"
+                };
+                if (!context.LabourTypes.Any())
+                {
+                    foreach(string t in laboursTypes)
+                    {
+                        LabourType type = new LabourType
+                        {
+                            Name = t,
+                        };
+                        context.LabourTypes.Add(type); 
+                    }
+                    context.SaveChanges();
+                }
+
+                //Labour
+                int[] projectIDss = context.Projects.Select(p => p.ID).ToArray();
+                int projectIDCountt = projectIDss.Length;
+                int[] typesIDs = context.LabourTypes.Select(t => t.ID).ToArray();
+                int typesIDCount = typesIDs.Length;
+                int[] materialIDs = context.Materials.Select(m => m.ID).ToArray();
+                string[] lDescriptions = new string[]
+                {
+                    "Cutting grass to maintain an even height.",
+    "Removing unwanted plants from gardens and other areas.",
+    "Pruning and shaping hedges to desired form.",
+    "Applying a layer of material to the soil surface to conserve moisture and suppress weeds.",
+    "Installing new plants, flowers, shrubs, or trees.",
+    "Trimming back overgrown branches to improve plant health and appearance.",
+    "Laying down pre-grown grass patches to establish a new lawn.",
+    "Loosening compacted soil to improve air and water circulation.",
+    "Applying nutrients to soil to promote plant growth and health.",
+    "Providing adequate moisture to plants, especially during dry periods.",
+    "Clearing fallen leaves from lawns, walkways, and other areas.",
+    "Creating clean borders between different landscape elements.",
+    "Planting grass seed to establish a new lawn or fill in patches.",
+    "Installing systems to efficiently water landscapes.",
+    "Pruning, trimming, and maintaining trees for health and appearance.",
+    "Planning and designing outdoor spaces for aesthetic appeal and functionality.",
+    "Managing pests that can damage plants and landscapes.",
+    "Installing lights to enhance visibility and safety in outdoor spaces."
+
+                };
+
+                if (!context.Labours.Any())
+                {
+                    int k = 0;
+                    double min = 35.0;
+                    double max = 40.0;
+                    
+                    foreach (int i in projectIDss)
+                    {
+                        int howMany = random.Next(1, typesIDCount);
+                        for(int j =1; j <= howMany; j++)
+                        {
+                            k = (k >= typesIDCount) ? 0 : k;
+                            Labour l = new Labour()
+                            {
+                                
+                                LabourTypeID = typesIDs[random.Next(typesIDCount)],
+                                LabourHours = random.NextDouble() * (max - min) + min,
+                                LabourDescription = lDescriptions[random.Next(18)],
+                                LabourUnitPrice = random.NextDouble() * (20.0 - 16.0) + 16.0
+                            };
+                            k++;
+                            context.Labours.Add(l);
+                        }
+                        context.SaveChanges();
+                    }
+                }
+
+                if(!context.Bids.Any())
+                {
+                    int k = 0;
+                    foreach (int i in projectIDss)
+                    {
+                        Bid b = new Bid()
+                        {
+                            BidDate = DateTime.Today.AddDays(-random.Next(1, 365)),
+                            LabourID = typesIDs[random.Next(typesIDCount)],
+                            ProjectID = projectIDss[random.Next(projectIDCountt)],
+                            MaterialID = materialIDs[random.Next(materialIDs.Length)]
+                        };
+                        k++;
+                        context.Bids.Add(b);
+                    }
+                    context.SaveChanges();
                 }
 
             }
