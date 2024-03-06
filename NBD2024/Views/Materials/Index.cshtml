@@ -15,9 +15,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.PerUnitCharge)
+                @Html.DisplayNameFor(model => model.Area)
             </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.PerYardCharge)
+            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.ProyectID)
             </th>
@@ -33,9 +39,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PerUnitCharge)
-            </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerYardCharge)
+                </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.ProyectID)
             </td>

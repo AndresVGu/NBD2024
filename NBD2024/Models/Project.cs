@@ -130,7 +130,7 @@ namespace NBD2024.Models
         //City
         [Display(Name = "City")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select the City.")]
-        public int CityID { get; set; }
+        public int? CityID { get; set; }
         public City City { get; set; }
 
         //Project Setup Notes

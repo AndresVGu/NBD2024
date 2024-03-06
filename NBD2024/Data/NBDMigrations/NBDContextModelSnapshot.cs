@@ -193,10 +193,16 @@ namespace NBD2024.Data.NBDMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Area")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("ClientID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("InventoryID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("PerUnitCharge")
+                    b.Property<double>("PerYardCharge")
                         .HasColumnType("REAL");
 
                     b.Property<int?>("ProjectID")
@@ -209,6 +215,8 @@ namespace NBD2024.Data.NBDMigrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
 
                     b.HasIndex("ProjectID");
 
@@ -403,6 +411,12 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Material", b =>
                 {
+                    b.HasOne("NBD2024.Models.Client", "Client")
+                        .WithMany("Materials")
+                        .HasForeignKey("ClientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NBD2024.Models.Inventory", "Inventory")
                         .WithMany("Materials")
                         .HasForeignKey("InventoryID")
@@ -412,6 +426,8 @@ namespace NBD2024.Data.NBDMigrations
                     b.HasOne("NBD2024.Models.Project", "Project")
                         .WithMany("Material")
                         .HasForeignKey("ProjectID");
+
+                    b.Navigation("Client");
 
                     b.Navigation("Inventory");
 
@@ -463,6 +479,8 @@ namespace NBD2024.Data.NBDMigrations
 
             modelBuilder.Entity("NBD2024.Models.Client", b =>
                 {
+                    b.Navigation("Materials");
+
                     b.Navigation("Projects");
                 });
 

@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<NBD2024.Models.Project>
 <br />
 <div class="panel panel-primary">
+   
     <div class="panel-heading">
         <h4 class="panel-title">List of Projects</h4>
+        <a asp-controller="Projects" asp-action="Create" class="btn btn-outline-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Create a new project">Add Project</a>
+
     </div>
     <div class="panel-body scrollable-panel">
         <table class="table table-striped">
@@ -14,6 +17,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.StartDateSummary)
                     </th>
+                    
                 </tr>
             </thead>
             <tbody>

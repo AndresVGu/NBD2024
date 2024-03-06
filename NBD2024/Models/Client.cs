@@ -93,7 +93,7 @@ namespace NBD2024.Models
 
 
 
-
+        public ICollection<Material> Materials { get; set; } = new HashSet<Material>();
         public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
     }

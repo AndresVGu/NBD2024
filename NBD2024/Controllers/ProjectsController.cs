@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using NBD2024.CustomControllers;
 using NBD2024.Data;
 using NBD2024.Models;
@@ -23,18 +24,19 @@ namespace NBD2024.Controllers
 
         // GET: Projects
         public async Task<IActionResult> Index(string SearchString, int? ClientID,
-           int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "BidDate")
+           int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "ProjectName")
         {
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
 
-            string[] sortOptions = new[] { "BidDate", "BeginDate", "CompleteDate", "ProjectSite", "City" };
+            string[] sortOptions = new[] { "ProjectName", "StartTime", "EndTime", "ProjectSite", "City", "Client" };
 
             PopulateDropDownLists();
 
             var projects = _context.Projects
                 .Include(p => p.Client)
+                .Include(p => p.City)
                 .AsNoTracking();
 
             #region Filters
@@ -49,8 +51,12 @@ namespace NBD2024.Controllers
                 projects = projects.Where(p => p.ProjectSite.ToUpper().Contains(SearchString.ToUpper())
                             || p.BidDate.ToString().Contains(SearchString) || p.StartTime.ToString().Contains(SearchString)
                             || p.EndTime.ToString().Contains(SearchString)
+                            || p.Client.FirstName.ToUpper().Contains(SearchString.ToUpper())
+                            || p.ProjectName.ToUpper().Contains(SearchString.ToUpper())
+                            || p.Client.LastName.ToUpper().Contains(SearchString.ToUpper())
                             || p.Client.CompanyName.ToUpper().Contains(SearchString.ToUpper())
-                            || p.Client.City.Name.ToUpper().Contains(SearchString.ToUpper())
+                            || p.City.Name.ToUpper().Contains(SearchString.ToUpper())
+                            || p.City.Province.Name.ToUpper().Contains(SearchString.ToUpper())
                             );
                 numberFilters++;
             }
@@ -89,12 +95,12 @@ namespace NBD2024.Controllers
                 if (sortDirection == "asc")
                 {
                     projects = projects
-                        .OrderBy(p => p.Client.City.Name);
+                        .OrderBy(p => p.City.Name);
                 }
                 else
                 {
                     projects = projects
-                        .OrderByDescending(p => p.Client.City.Name);
+                        .OrderByDescending(p => p.City.Name);
                 }
             }
             else if (sortField == "ProjectSite")
@@ -110,7 +116,7 @@ namespace NBD2024.Controllers
                         .OrderByDescending(p => p.ProjectSite);
                 }
             }
-            else if (sortField == "CompleteDate")
+            else if (sortField == "EndTime")
             {
                 if (sortDirection == "asc")
                 {
@@ -123,7 +129,7 @@ namespace NBD2024.Controllers
                         .OrderBy(p => p.EndTime);
                 }
             }
-            else if (sortField == "BeginDate")
+            else if (sortField == "StartTime")
             {
                 if (sortDirection == "asc")
                 {
@@ -136,17 +142,32 @@ namespace NBD2024.Controllers
                         .OrderBy(p => p.StartTime);
                 }
             }
-            else if (sortField == "BidDate")
+            else if (sortField == "ProjectName")
             {
                 if (sortDirection == "asc")
                 {
                     projects = projects
-                        .OrderByDescending(p => p.BidDate);
+                        .OrderByDescending(p => p.ProjectName);
                 }
                 else
                 {
                     projects = projects
-                        .OrderBy(p => p.BidDate);
+                        .OrderBy(p => p.ProjectName);
+                }
+            }
+            else //sorting by Client Name
+            {
+                if(sortDirection == "asc")
+                {
+                    projects = projects
+                        .OrderBy(p => p.Client.FirstName)
+                        .ThenBy(p => p.Client.LastName);
+                }
+                else
+                {
+                    projects = projects
+                        .OrderByDescending(p => p.Client.FirstName)
+                        .ThenByDescending(p => p.Client.LastName);
                 }
             }
 
@@ -174,6 +195,7 @@ namespace NBD2024.Controllers
             var project = await _context.Projects
                 .AsNoTracking()
                 .Include(p => p.Client)
+                .Include(p => p.City)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (project == null)
             {
@@ -186,6 +208,8 @@ namespace NBD2024.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
+            var project = new Project();
+            PopulateCityDropDownLists();
             PopulateDropDownLists();
             return View();
         }
@@ -195,25 +219,34 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,BidDate,EstBeginDate,EstCompleteDate,ProjectSite,SetupNotes,ClientID")] Project project)
+        public async Task<IActionResult> Create([Bind("ID,ProjectName,BidDate,StartTime,EndTime,ProjectSite,SetupNotes,CityID,ClientID")] Project project,
+            string[]selectedOptions)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    // _context.Add(project);
-                    // await _context.SaveChangesAsync();
-                    // return RedirectToAction(nameof(Index));
+                    _context.Add(project);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", new {ProjectID = project.ID});
+                    //Deberia agragar una tabla ProjectMaterials
+                    
                 }
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+            }
             catch (DbUpdateException)
             {
                 ModelState.AddModelError("", "Unable to create record. Try again, and if the problem persists see your administrator.");
             }
+           
             PopulateDropDownLists(project);
+            PopulateCityDropDownLists(project);
             return View(project);
         }
 
@@ -225,7 +258,9 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects
+                .Include(p => p.City)
+                .FirstOrDefaultAsync(p => p.ID == id);
             if (project == null)
             {
                 return NotFound();
@@ -239,9 +274,12 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions,
+            Byte[] RowVersion)
         {
-            var projectToUpdate = await _context.Projects.FirstOrDefaultAsync(p => p.ID == id);
+            var projectToUpdate = await _context.Projects
+                .Include(p => p.City)
+                .FirstOrDefaultAsync(p => p.ID == id);
 
             if (projectToUpdate == null)
             {
@@ -269,6 +307,10 @@ namespace NBD2024.Controllers
                         throw;
                     }
                 }
+                catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                }
                 catch (DbUpdateException)
                 {
                     ModelState.AddModelError("", "Unable to create record. Try again, and if the problem persists see your administrator.");
@@ -276,9 +318,10 @@ namespace NBD2024.Controllers
 
             }
             PopulateDropDownLists(projectToUpdate);
+            PopulateCityDropDownLists(projectToUpdate);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-            //return View(projectToUpdate);
+           // return RedirectToAction(nameof(Index));
+            return View(projectToUpdate);
         }
 
         // GET: Projects/Delete/5
@@ -292,6 +335,7 @@ namespace NBD2024.Controllers
             var project = await _context.Projects
                 .AsNoTracking()
                 .Include(p => p.Client)
+                .Include(p => p.City)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (project == null)
             {
@@ -312,6 +356,7 @@ namespace NBD2024.Controllers
             }
             var project = await _context.Projects
                .Include(p => p.Client)
+               .Include(p => p.City)
                .FirstOrDefaultAsync(m => m.ID == id);
             try
             {
@@ -321,7 +366,7 @@ namespace NBD2024.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               return Redirect(ViewData["returnURL"].ToString());
             }
             catch (DbUpdateException)
             {
@@ -336,7 +381,8 @@ namespace NBD2024.Controllers
         private SelectList ClientSelectList(int? selectedId)
         {
             return new SelectList(_context.Clients
-                .OrderBy(c => c.CompanyName), "ID", "ClientName", selectedId);
+                .OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName), "ID", "FormalName", selectedId);
         }
         //Populate DropdownLists
         private void PopulateDropDownLists(Project project = null)
@@ -345,6 +391,48 @@ namespace NBD2024.Controllers
                          orderby c.CompanyName
                          select c;
             ViewData["ClientID"] = new SelectList(dQuery, "ID", "ClientName", project?.ClientID);
+            ViewData["ClientID"] = ClientSelectList(project?.ClientID);
+        }
+
+        //Province Select List
+        private SelectList ProvinceSelectList(string selectedID)
+        {
+            return new SelectList(_context.Provinces
+                .OrderBy(c => c.Name), "ID", "Name", selectedID);
+        }
+        //City Select List:
+        private SelectList CitySelectList(string ProvinceID, int? selectedID)
+        {
+            var query = from c in _context.Cities
+                        where c.ProvinceID == ProvinceID
+                        select c;
+            return new SelectList(query.OrderBy(c => c.Name), "ID", "Summary", selectedID);
+        }
+
+        private void PopulateCityDropDownLists(Project project = null)
+        {
+           
+            if ((project?.CityID).HasValue)
+            {
+                //Careful: CityID might have a value but the city object is missing
+                if (project.City == null)
+                {
+                    project.City = _context.Cities.Find(project.CityID);
+                }
+                ViewData["ProvinceID"] = ProvinceSelectList(project.City.ProvinceID);
+                ViewData["CityID"] = CitySelectList(project.City.ProvinceID, project.CityID);
+            }
+            else
+            {
+                ViewData["ProvinceID"] = ProvinceSelectList(null);
+                ViewData["CityID"] = CitySelectList(null, null);
+            }
+
+        }
+        [HttpGet]
+        public JsonResult GetCities(string ProvinceID)
+        {
+            return Json(CitySelectList(ProvinceID, null));
         }
         #endregion
 

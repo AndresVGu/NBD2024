@@ -22,11 +22,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
 
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
+                        </li>
+
+                     
+                        
                         <!--DropDownList-->
                         <li class="nav-item dropdown">
                             <!--Dropdown Head-->
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" area-expanded="false">
-                                Client Menu
+                                Materials Menu
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -34,10 +43,19 @@
 
                                 -->
                                 <li class="nav-item dropdown">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Inventories" asp-action="Index">Inventory</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider" />
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Inventories" asp-action="Index">Labour</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Inventories" asp-action="Index">Staff</a>
                                 </li>
 
 
@@ -46,12 +64,7 @@
                         </li>
                         <!--End DropDownList-->
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Projects" asp-action="Index">Projects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Materials" asp-action="Index">Materials</a>
-                        </li>
+                       
 
                     </ul>
                 </div>

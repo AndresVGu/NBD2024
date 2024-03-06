@@ -109,7 +109,7 @@ namespace NBD2024.Controllers
                         .OrderByDescending(c => c.Phone);
                 }
             }
-            else if (sortField == "Contact")
+            else if (sortField == "Client")
             {
                 if (sortDirection == "asc")
                 {
@@ -151,7 +151,7 @@ namespace NBD2024.Controllers
                         .OrderByDescending(c => c.City.Name);
                 }
             }
-            else if (sortField == "Client")
+            else if (sortField == "Company")
             {
                 if (sortDirection == "asc")
                 {

@@ -7,7 +7,7 @@
 <h1>Clients</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Add a new client">Create New</a>
+    
 </p>
 
 <!--Filtering Form-->
@@ -74,7 +74,9 @@
 
                 </th>
                 
-                <th></th>
+                <th class="text-center">
+                    <a asp-action="Create" class="btn btn-outline-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Add a new client">Add Client</a>
+                </th>
             </tr>
         </thead>
 
@@ -97,13 +99,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PhoneFormatted)
                     </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning" fdprocessedid="t6a41e"
-                           data-bs-toggle="tooltip" title="Edit Client">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info" fdprocessedid="rpbgq"
-                           data-bs-toggle="tooltip" title="Client Details">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger" fdprocessedid="a09td"
-                           data-bs-toggle="tooltip" title="Delete Client">Delete</a>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary" fdprocessedid="t6a41e"
+                           data-bs-toggle="tooltip" title="Edit Client">&#x270E;</a>
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary" fdprocessedid="rpbgq"
+                           data-bs-toggle="tooltip" title="Client Details"> &#x1F50E;</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-danger" fdprocessedid="a09td"
+                           data-bs-toggle="tooltip" title="Delete Client"> &#x274C;</a>
                     </td>
                 </tr>
             }
