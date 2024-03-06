@@ -289,3 +289,4 @@ C:\Term 4\Demos\NBD2024\NBD2024\bin\Debug\net7.0\ru\Microsoft.CodeAnalysis.Works
 C:\Term 4\Demos\NBD2024\NBD2024\bin\Debug\net7.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Term 4\Demos\NBD2024\NBD2024\bin\Debug\net7.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Term 4\Demos\NBD2024\NBD2024\bin\Debug\net7.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Term 4\Demos\NBD2024\NBD2024\obj\Debug\net7.0\NBD2024.sourcelink.json

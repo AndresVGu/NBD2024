@@ -7,7 +7,7 @@
 <h1>Clients</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Add a new client">Create New</a>
+    
 </p>
 
 <!--Filtering Form-->
@@ -24,19 +24,23 @@
             <div class="card card-body bg-light">
                 <!--Filters-->
                 <div class="row">
-                    <!--Select by client
-
-                    <div class="form-group col-md-4">
-                        <label class="control-label">Select by Contact:</label>
-                        //Html.DropDownList("CityID", null, "All Cities",
-                           //htmlAttributes: new { class = "form-control" })
-                    </div>
-                    -->
+                    
+                    
                     <!--Select by string-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Client:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="E.g.Name/Company/Phone/Address/City " })
                     </div>
+
+                    <!--Select by Province -->
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Select by City:</label>
+                        @Html.DropDownList("CityID", null, "Select Cities",
+                                 htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    
+
                     <!--Button-->
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-success" data-bs-toggle="tooltip" title="Apply filters" />
@@ -52,30 +56,27 @@
         <thead>
             <tr class="table-primary">
                 <th>
-                    <input type="submit" name="actionButton" value="Client" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by client" />
-                    <!--
-                    @Html.DisplayNameFor(model => model.CompanyName)
-                    -->
+                    <input type="submit" name="actionButton" value="Client" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Client Name" />
+                    
+                </th>
+
+                <th>
+                    <input type="submit" name="actionButton" value="Company" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by Company Name" />
 
                 </th>
 
                 <th>
-                    <input type="submit" name="actionButton" value="City" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by city" />
+                    <input type="submit" name="actionButton" value="City" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by City" />
 
                 </th>
                 <th>
-                    <input type="submit" name="actionButton" value="Province" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by province" />
+                    <input type="submit" name="actionButton" value="Phone" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by Phone Number" />
 
                 </th>
-
-                <th>
-                    <input type="submit" name="actionButton" value="Contact" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by contact name" />
-
+                
+                <th class="text-center">
+                    <a asp-action="Create" class="btn btn-outline-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Add a new client">Add Client</a>
                 </th>
-                <th>
-                    <input type="submit" name="actionButton" value="Phone" class="btn btn-link" data-bs-toggle="tooltip" title="Sort by phone number" />
-                </th>
-                <th></th>
             </tr>
         </thead>
 
@@ -83,29 +84,28 @@
             @foreach (var item in Model)
             {
                 <tr>
+
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FormalName)
+                    </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.CompanyName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.City.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City.Province.Name)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FormalName)
+                        @Html.DisplayFor(modelItem => item.City.Summary)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PhoneFormatted)
                     </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-warning" fdprocessedid="t6a41e"
-                           data-bs-toggle="tooltip" title="Edit Client">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info" fdprocessedid="rpbgq"
-                           data-bs-toggle="tooltip" title="Client Details">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger" fdprocessedid="a09td"
-                           data-bs-toggle="tooltip" title="Delete Client">Delete</a>
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary" fdprocessedid="t6a41e"
+                           data-bs-toggle="tooltip" title="Edit Client">&#x270E;</a>
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary" fdprocessedid="rpbgq"
+                           data-bs-toggle="tooltip" title="Client Details"> &#x1F50E;</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-danger" fdprocessedid="a09td"
+                           data-bs-toggle="tooltip" title="Delete Client"> &#x274C;</a>
                     </td>
                 </tr>
             }
@@ -116,6 +116,13 @@
 </form>
 
 @section Scripts {
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $('#SearchClient').autocomplete({
+            minLength: 1,
+            source: '@Url.Action("GetClients", "Client")'
+        });
+    </script>
     <!--Tooltips-->
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

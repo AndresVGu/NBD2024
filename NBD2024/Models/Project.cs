@@ -8,6 +8,15 @@ namespace NBD2024.Models
 
         //Summary Properties By Andres Villarreal
         #region Summary Properties
+        [Display(Name ="Summary")]
+        public string Summary
+        {
+            get
+            {
+                return $"{ProjectName} ,{ProjectSite}";
+            }
+        }
+
         //Start Date Summary
         [Display(Name = "Date")]
         public string StartDateSummary
@@ -95,14 +104,7 @@ namespace NBD2024.Models
         [Required(ErrorMessage = "You cannot leave bid date blank.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime BidDate { get; set; }
-
-        //Estimate Begin Date
-        [Display(Name = "Estimated Begin Date")]
-        [Required(ErrorMessage = "You cannot leave begin date blank.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime StartTime { get; set; }
+          public DateTime StartTime { get; set; }
 
 
         //Estimate Complete Date
@@ -121,7 +123,7 @@ namespace NBD2024.Models
         //City
         [Display(Name = "City")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select the City.")]
-        public int CityID { get; set; }
+        public int? CityID { get; set; }
         public City City { get; set; }
 
         //Project Setup Notes
@@ -139,16 +141,15 @@ namespace NBD2024.Models
 
         //Foreign Keys
         #region Foreign Keys:
+        [Display(Name ="Client")]
         public int ClientID { get; set; }
         public Client Client { get; set; }
         #endregion
 
        
-        //Materials info:
-        public ICollection<Material> Material { get; set; } = new HashSet<Material>();
+      public ICollection<Bid> Bids { get; set; } = new HashSet<Bid>();
 
-        //Labour info:
-        public ICollection<Labour> Labour { get; set; } = new HashSet<Labour>();
+      
 
         //Staff info:
         public ICollection<Position> Positions { get; set; } = new HashSet<Position>();

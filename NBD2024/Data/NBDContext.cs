@@ -84,14 +84,14 @@ namespace NBD2024.Data
             //Not a Composite Primary Key but we want to
             //guarantee that the combination of the two
             //Foreign keys is unique
-            modelBuilder.Entity<Material>()
-                .HasIndex(m => new { m.InventoryID, m.ProyectID })
+          /* modelBuilder.Entity<Material>()
+                .HasIndex(m => new { m.InventoryID, m.ProjectID })
                 .IsUnique();
 
             modelBuilder.Entity<Labour>()
                 .HasIndex(l => new { l.LabourTypeID, l.ProjectID })
                 .IsUnique();
-
+          */
             //Prevent cascade delete from staff tp positio
             //so we are prevented from deleting a staff with 
             //projects they have worked
@@ -103,19 +103,19 @@ namespace NBD2024.Data
 
             //Prevent Cascade Delete from Inventory to Material
             //So we are Prevented from deleting a Inventory Item used in a Project
-            modelBuilder.Entity<Inventory>()
-                .HasMany<Material>(c => c.Materials)
-                .WithOne(p => p.Inventory)
-                .HasForeignKey(p => p.InventoryID)
-                .OnDelete(DeleteBehavior.Restrict);
+          //  modelBuilder.Entity<Inventory>()
+            //    .HasMany<Material>(c => c.Materials)
+              //  .WithOne(p => p.Inventory)
+                //.HasForeignKey(p => p.InventoryID)
+                //.OnDelete(DeleteBehavior.Restrict);
 
             //Prevent Cascade Delete from LabourType to Labour
             //So we are Prevented from deleting a LabourType used in a Projeect
-            modelBuilder.Entity<LabourType>()
-                .HasMany<Labour>(c => c.Labours)
-                .WithOne(p => p.LabourType)
-                .HasForeignKey(p => p.LabourTypeID)
-                .OnDelete(DeleteBehavior.Restrict);
+           // modelBuilder.Entity<LabourType>()
+             //   .HasMany<Labour>(c => c.Labours)
+               // .WithOne(p => p.LabourType)
+                //.HasForeignKey(p => p.LabourTypeID)
+                //.OnDelete(DeleteBehavior.Restrict);
 
 
 
