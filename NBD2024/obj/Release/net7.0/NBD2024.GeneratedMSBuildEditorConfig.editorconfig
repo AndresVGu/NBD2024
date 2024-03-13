@@ -42,6 +42,34 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_addLabourModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfYWRkTGFib3VyTW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_addMaterialModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfYWRkTWF0ZXJpYWxNb2RhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_LabourCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfTGFib3VyQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_ListOfLabours.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfTGlzdE9mTGFib3Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_ListOfMaterials.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfTGlzdE9mTWF0ZXJpYWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_MaterialCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfTWF0ZXJpYWxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Bids/_QuantityLabour.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlkc1xfUXVhbnRpdHlMYWJvdXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Clients/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -138,6 +166,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3VyVHlwZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Lookup/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9va3VwXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Lookup/_Labour.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9va3VwXF9MYWJvdXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Lookup/_Material.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9va3VwXF9NYXRlcmlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Materials/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0ZXJpYWxzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -156,6 +196,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Materials/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0ZXJpYWxzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/ProjectBid/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJpZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/ProjectBid/_ProjectDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJpZFxfUHJvamVjdERldGFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Projects/Create.cshtml]
@@ -180,6 +228,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Term 4/Demos/NBD2024/NBD2024/Views/Shared/_BackToList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9CYWNrVG9MaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Term 4/Demos/NBD2024/NBD2024/Views/Shared/_LoginPartial.cshtml]

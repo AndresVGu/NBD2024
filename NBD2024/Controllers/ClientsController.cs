@@ -226,12 +226,12 @@ namespace NBD2024.Controllers
                     // return RedirectToAction(nameof(Index));
                     _context.Add(client);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Detais", new { client.ID });
+                   // return RedirectToAction("Detais", new { client.ID });
                 }
                // _context.Add(client);
                // await _context.SaveChangesAsync();
                 // return RedirectToAction(nameof(Index));
-               // return RedirectToAction("Details", new { client.ID });
+               return RedirectToAction("Details", new { client.ID });
             }
             catch (RetryLimitExceededException /* dex */)
             {

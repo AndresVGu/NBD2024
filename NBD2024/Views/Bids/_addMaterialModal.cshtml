@@ -1,0 +1,17 @@
+﻿<!-- Modal-->
+<div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="MaterialmyModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="MaterialmyModalLabel">Add New Material</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                @{
+                    var s = new NBD2024.Models.Material();
+                    <partial name="_MaterialCreate" model="s" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

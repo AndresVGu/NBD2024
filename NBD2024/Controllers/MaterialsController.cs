@@ -5,39 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using NBD2024.CustomControllers;
 using NBD2024.Data;
 using NBD2024.Models;
-using NBD2024.Utilities;
+using NBD2024.CustomControllers;
 
 namespace NBD2024.Controllers
 {
-    public class MaterialsController : ElephantController
+    public class MaterialsController : LookupsController
     {
         private readonly NBDContext _context;
 
         public MaterialsController(NBDContext context)
         {
             _context = context;
-        } 
-
-        // GET: Materials
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
-        {
-            var materials = _context.Materials
-                
-                 .AsNoTracking();
-
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-            ViewData["PageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-
-            var pagedData = await PaginatedList<Material>.CreateAsync(materials, page ?? 1, pageSize);
-            return View(pagedData);
-            
         }
 
-        // GET: Materials/Details/5
+        // GET: Inventories
+        public IActionResult Index()
+        {
+               
+             return Redirect(ViewData["returnURL"].ToString());
+        }
+
+        // GET: Inventories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -45,58 +35,54 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var material = await _context.Materials
-                               .Include(m => m.Inventory) 
+            var inventory = await _context.Materials
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (material == null)
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(material);
+            return View(inventory);
         }
 
-        // GET: Materials/Create
+        // GET: Inventories/Create
         public IActionResult Create()
         {
-            Material material = new Material();
-            PopulateDropDownLists();
             return View();
         }
 
-        // POST: Materials/Create
+        // POST: Inventories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Quantity,Area,PerYardCharge,ClientID,ProyectID,InventoryID")] Material material,
-            string[] selectedOptions)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description, Price")] Material inventory)
         {
             try
             {
-            if (ModelState.IsValid)
-            {
-                _context.Add(material);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new {material.ID});
-            }
-               
 
+                if (ModelState.IsValid)
+                {
+                    _context.Add(inventory);
+                    await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
+                }
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (DbUpdateException dex)
             {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed"))
+                {
+                    ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Material Names.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
-
-            PopulateDropDownLists(material);
-           return View(material);
+            return View(inventory);
         }
 
-        // GET: Materials/Edit/5
+        // GET: Inventories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -104,46 +90,40 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var material = await _context.Materials
-                
-             .Include(m => m.Inventory)
-                .FirstOrDefaultAsync(m => m.ID == id);
-                
-            if (material == null)
+            var inventory = await _context.Materials.FindAsync(id);
+            if (inventory == null)
             {
                 return NotFound();
             }
-            PopulateDropDownLists(material);
-            return View(material);
+            return View(inventory);
         }
 
-        // POST: Materials/Edit/5
+        // POST: Inventories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Quantity,PerUnitCharge,ProyectID,InventoryID")] Material material)
+        public async Task<IActionResult> Edit(int id)
         {
-            var materialToUpdate = await _context.Materials
-                
-               
-                .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (materialToUpdate == null)
+            var inventoryToUpdate = await _context.Materials
+                .FirstOrDefaultAsync(i => i.ID == id);
+            
+            if(inventoryToUpdate == null)
             {
                 return NotFound();
             }
-            if(await TryUpdateModelAsync<Material>(materialToUpdate, ""
-          ))
+            if(await TryUpdateModelAsync<Material>(inventoryToUpdate, "",
+                e => e.Name, e => e.Description, e => e.Price
+             ))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { materialToUpdate.ID });
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaterialExists(materialToUpdate.ID))
+                    if (!InventoryExists(inventoryToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -152,20 +132,23 @@ namespace NBD2024.Controllers
                         throw;
                     }
                 }
-                catch (DbUpdateException)
+                catch (DbUpdateException dex)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-
+                    if (dex.GetBaseException().Message.Contains("UNIQUE constraint failed"))
+                    {
+                        ModelState.AddModelError("Name", "Unable to save changes. Remember, you cannot have duplicate Equipment Names.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    }
                 }
-                return RedirectToAction("Index", "Lookup", new { Tab = ControllerName() + "-Tab" });
-
             }
-            PopulateDropDownLists(materialToUpdate);
-            return View(materialToUpdate);
-          
+            return View(inventoryToUpdate);
+           
         }
 
-        // GET: Materials/Delete/5
+        // GET: Inventories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -173,73 +156,55 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var material = await _context.Materials
-             
-               
+            var inventory = await _context.Materials
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (material == null)
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(material);
+            return View(inventory);
         }
 
-        // POST: Materials/Delete/5
+        // POST: Inventories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Materials == null)
             {
-                return Problem("No Materials To delete");
+                return Problem("No Material To Delete");
             }
-            var material = await _context.Materials.FindAsync(id);
+            var inventory = await _context.Materials
+                .FirstOrDefaultAsync(i => i.ID == id);
+                
             try
             {
-                
-            if (material != null)
+
+            if (inventory != null)
             {
-                _context.Materials.Remove(material);
+                _context.Materials.Remove(inventory);
             }
             
             await _context.SaveChangesAsync();
-            return Redirect(ViewData["returnURL"].ToString());
+                return Redirect(ViewData["returnURL"].ToString());
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException dex)
             {
-                //Note: there is really no reason a delete should fail if you can "talk" to the database.
-                ModelState.AddModelError("", "Unable to delete record. Try again, and if the problem persists see your system administrator.");
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete " + ViewData["ControllerFriendlyName"] +
+                        ". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] + " that has related records.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
-            return View(material);
+            return View(inventory);
         }
 
-        private SelectList ClientSelectList(int? selectedId)
-        {
-            return new SelectList(_context.Clients
-                .OrderBy(c => c.FirstName)
-                .ThenBy(c => c.LastName), "ID", "FormalName", selectedId);
-        }
-
-        private SelectList ProjectSelectList(int? selectId)
-        {
-            return new SelectList(_context.Projects
-                .OrderBy(p => p.ProjectName), "ID", "ProjectName", selectId);
-        }
-
-        private SelectList InventorySelectList(int? selectId)
-        {
-            return new SelectList(_context.Inventories
-                .OrderBy(i => i.Name), "ID", "Name", selectId);
-        }
-
-        private void PopulateDropDownLists(Material material = null)
-        {
-           
-            ViewData["InventoryID"] = InventorySelectList(material?.InventoryID);
-        }
-
-        private bool MaterialExists(int id)
+        private bool InventoryExists(int id)
         {
           return _context.Materials.Any(e => e.ID == id);
         }

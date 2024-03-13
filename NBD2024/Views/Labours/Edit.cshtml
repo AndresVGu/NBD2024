@@ -1,12 +1,7 @@
 ﻿@model NBD2024.Models.Labour
 
-@{
-    ViewData["Title"] = "Edit";
-}
+<partial name="_ViewHeading" />
 
-<h1>Edit</h1>
-
-<h4>Labour</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,24 +9,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
-                <label asp-for="LabourHours" class="control-label"></label>
-                <input asp-for="LabourHours" class="form-control" />
-                <span asp-validation-for="LabourHours" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LabourDescription" class="control-label"></label>
-                <input asp-for="LabourDescription" class="form-control" />
-                <span asp-validation-for="LabourDescription" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LabourUnitPrice" class="control-label"></label>
-                <input asp-for="LabourUnitPrice" class="form-control" />
-                <span asp-validation-for="LabourUnitPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LabourTypeID" class="control-label"></label>
-                <select asp-for="LabourTypeID" class="form-control" asp-items="ViewBag.LabourTypeID"></select>
-                <span asp-validation-for="LabourTypeID" class="text-danger"></span>
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -41,9 +31,11 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <partial name="_BackToList" />
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

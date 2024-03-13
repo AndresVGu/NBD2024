@@ -5,58 +5,38 @@ namespace NBD2024.Models
     public class Labour
     {
         public int ID { get; set; }
-
-        [Display(Name ="Hours")]
-        public string HoursSummary
+        public string Summary
         {
             get
             {
-                return $"{LabourHours.ToString("F2")}";
+                return Name + Price.ToString("C2");
             }
         }
 
-        [Display(Name = "Price/Hour")]
-        public string PriceHours
+        public string UnitPrice
         {
             get
             {
-                return $"{LabourUnitPrice.ToString("C2")}";
+                return Price.ToString("C2");
             }
         }
 
-        [Display(Name = "Extended Price")]
-        public string Total
-        {
-            get
-            {
-                return $"{LabourExtendedPrice.ToString("C2")}";
-            }
-        }
+        [Display(Name = "Labour Name")]
+        [Required(ErrorMessage = "Labour names is required")]
+        [StringLength(300, ErrorMessage = "Labour name cannot be more 300 characters Long")]
+        public string Name { get; set; }
 
-       
-        [Display(Name = "Hours")]
-        [Required(ErrorMessage = "You cannot leave first name blank.")]
-        public double LabourHours { get; set; }
 
-        [Display(Name = "Description")]
-        [Required(ErrorMessage = "You cannot leave first name blank.")]
-        public string LabourDescription { get; set; }
+        [Display(Name = "Labour Description")]
+        [StringLength(3000, ErrorMessage = "Description cannot be more than 3000 characters long")]
+        [DataType(DataType.MultilineText)]
+        public string? Description { get; set; }
 
-        [Display(Name = "Price/Hour")]
-        [Required(ErrorMessage = "You cannot leave first name blank.")]
-        public double LabourUnitPrice { get; set; }
+        [Display(Name = "Price per Hour")]
+        [Required(ErrorMessage = "You must a price.")]
+        [DataType(DataType.Currency)]
+        public double Price { get; set; }
 
-        [Display(Name = "Extended Price")]
-        public double LabourExtendedPrice
-        {
-            get { return LabourHours * LabourUnitPrice; }
-        }
-
-        //Forgien keys
-
-        [Display(Name ="Labour Type")]
-       public int LabourTypeID { get; set; }
-        public LabourType LabourType { get; set; }
-        
+        public ICollection<BidLabour> BidLabours { get; set; } = new HashSet<BidLabour>();
     }
 }

@@ -295,6 +295,7 @@ namespace NBD2024.Controllers
                 {
                     // await _context.SaveChangesAsync();
                     // return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Details", new { projectToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

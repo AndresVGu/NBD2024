@@ -8,11 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using NBD2024.CustomControllers;
 using NBD2024.Data;
 using NBD2024.Models;
-using NBD2024.Utilities;
 
 namespace NBD2024.Controllers
 {
-    public class LaboursController : ElephantController
+    public class LaboursController : LookupsController
     {
         private readonly NBDContext _context;
 
@@ -21,20 +20,13 @@ namespace NBD2024.Controllers
             _context = context;
         }
 
-        // GET: Labours
-        public async Task<IActionResult> Index(int? page, int? pageSizeID)
+        // GET: LabourTypes
+        public IActionResult Index()
         {
-            var lab = _context.Labours.Include(l => l.LabourType)
-                .AsNoTracking();
-
-            int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
-            ViewData["PageSizeID"] = PageSizeHelper.PageSizeList(pageSize);
-
-            var pagedData = await PaginatedList<Labour>.CreateAsync(lab, page ?? 1, pageSize);
-            return View(pagedData);
+              return Redirect(ViewData["returnURL"].ToString());
         }
 
-        // GET: Labours/Details/5
+        // GET: LabourTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -42,42 +34,47 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var labour = await _context.Labours
-                .Include(l => l.LabourType)
+            var labourType = await _context.Labours
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (labour == null)
+            if (labourType == null)
             {
                 return NotFound();
             }
 
-            return View(labour);
+            return View(labourType);
         }
 
-        // GET: Labours/Create
+        // GET: LabourTypes/Create
         public IActionResult Create()
         {
-            ViewData["LabourTypeID"] = new SelectList(_context.LabourTypes, "ID", "Name");
             return View();
         }
 
-        // POST: Labours/Create
+        // POST: LabourTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LabourHours,LabourDescription,LabourUnitPrice,LabourTypeID")] Labour labour)
+        public async Task<IActionResult> Create([Bind("ID,Name, Description, Price")] Labour labourType)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(labour);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(labourType);
+                    await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
+                }
             }
-            ViewData["LabourTypeID"] = new SelectList(_context.LabourTypes, "ID", "Name", labour.LabourTypeID);
-            return View(labour);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(labourType);
         }
 
-        // GET: Labours/Edit/5
+        // GET: LabourTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -85,37 +82,40 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var labour = await _context.Labours.FindAsync(id);
-            if (labour == null)
+            var labourType = await _context.Labours.FindAsync(id);
+            if (labourType == null)
             {
                 return NotFound();
             }
-            ViewData["LabourTypeID"] = new SelectList(_context.LabourTypes, "ID", "Name", labour.LabourTypeID);
-            return View(labour);
+            return View(labourType);
         }
 
-        // POST: Labours/Edit/5
+        // POST: LabourTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,LabourHours,LabourDescription,LabourUnitPrice,LabourTypeID")] Labour labour)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id != labour.ID)
+            var labourToUpdate = await _context.Labours
+                .FirstOrDefaultAsync(l => l.ID == id);
+
+            if (labourToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if(await TryUpdateModelAsync<Labour>(labourToUpdate, "",
+                l => l.Name, l=> l.Description, l => l.Price))
             {
                 try
                 {
-                    _context.Update(labour);
                     await _context.SaveChangesAsync();
+                    return Redirect(ViewData["returnURL"].ToString());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LabourExists(labour.ID))
+                    if (!LabourTypeExists(labourToUpdate.ID))
                     {
                         return NotFound();
                     }
@@ -124,13 +124,16 @@ namespace NBD2024.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
             }
-            ViewData["LabourTypeID"] = new SelectList(_context.LabourTypes, "ID", "Name", labour.LabourTypeID);
-            return View(labour);
+           
+            return View(labourToUpdate);
         }
 
-        // GET: Labours/Delete/5
+        // GET: LabourTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -138,37 +141,56 @@ namespace NBD2024.Controllers
                 return NotFound();
             }
 
-            var labour = await _context.Labours
-                .Include(l => l.LabourType)
+            var labourType = await _context.Labours
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (labour == null)
+            if (labourType == null)
             {
                 return NotFound();
             }
 
-            return View(labour);
+            return View(labourType);
         }
 
-        // POST: Labours/Delete/5
+        // POST: LabourTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Labours == null)
             {
-                return Problem("Entity set 'NBDContext.Labours'  is null.");
+                return Problem("No Labours To Delete.");
             }
-            var labour = await _context.Labours.FindAsync(id);
-            if (labour != null)
+            var labour = await _context.Labours
+                .FirstOrDefaultAsync(l => l.ID == id);
+
+            try
             {
-                _context.Labours.Remove(labour);
-            }
+
+                if (labour != null)
+                {
+                    _context.Labours.Remove(labour);
+                }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return Redirect(ViewData["returnURL"].ToString());
+            }
+            catch (DbUpdateException dex)
+            {
+                if (dex.GetBaseException().Message.Contains("FOREIGN KEY constraint failed"))
+                {
+                    ModelState.AddModelError("", "Unable to Delete " + ViewData["ControllerFriendlyName"] +
+                        ". Remember, you cannot delete a " + ViewData["ControllerFriendlyName"] + " that has related records.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+            }
+            return View(labour);
+
         }
 
-        private bool LabourExists(int id)
+        private bool LabourTypeExists(int id)
         {
           return _context.Labours.Any(e => e.ID == id);
         }

@@ -100,7 +100,7 @@ namespace NBD2024.Models
         public string ProjectName { get; set; }
 
         //BidDate
-        [Display(Name = "Bid Date")]
+        [Display(Name = "Start Date")]
         [Required(ErrorMessage = "You cannot leave bid date blank.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
@@ -109,9 +109,8 @@ namespace NBD2024.Models
 
         //Estimate Complete Date
         [Display(Name = "Estimated Complete Date")]
-        [Required(ErrorMessage = "You cannot leave complete date blank.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true, NullDisplayText ="Not Completed")]
         public DateTime? EndTime { get; set; }
 
         //Project Site
@@ -160,19 +159,19 @@ namespace NBD2024.Models
             //Project Date cannot be before January 1st, yyyy because that is when NBD open.
             if (StartTime < DateTime.Parse("2000-01-01"))
             {
-                yield return new ValidationResult("Date cannot be before January 1st, 2000", new[] { "EstBeginDate" });
+                yield return new ValidationResult("Date cannot be before January 1st, 2000", new[] { "StartTime" });
             }
 
             //Project Date cannot be more than 10 years in the future from the curren date.
             if (StartTime > DateTime.Now.AddYears(10))
             {
-                yield return new ValidationResult("Date cannot be more than 10 years in the future.", new[] { "EstCompleteDate" });
+                yield return new ValidationResult("Date cannot be more than 10 years in the future.", new[] { "EndTime" });
             }
 
             //Project cannot end before it starts
             if (EndTime < StartTime)
             {
-                yield return new ValidationResult("Project cannot end before it starts.", new[] { "EstCompleteDate" });
+                yield return new ValidationResult("Project cannot end before it starts.", new[] { "EndTime" });
             }
         }
     }
