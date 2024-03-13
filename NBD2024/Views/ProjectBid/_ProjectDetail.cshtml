@@ -1,0 +1,65 @@
+﻿@model NBD2024.Models.Project
+<partial name="_ViewHeading" />
+<hr/>
+<div class="row">
+    <div class="col-6">
+
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.ProjectName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ProjectName)
+            </dd>
+
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.ProjectSite)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ProjectSite)
+            </dd>
+        </dl>
+    </div>
+    <div class="col -6">
+
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.City.Name)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.SetupNotes)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.SetupNotes)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Client)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Client.FullName)
+            </dd>
+
+        </dl>
+    </div>
+
+</div>

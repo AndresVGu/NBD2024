@@ -5,23 +5,40 @@ namespace NBD2024.Models
     public class Material
     {
         public int ID { get; set; }
-        [Required(ErrorMessage = "The Quantity is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Material Quantity must be greater than zero.")]
-        public int Quantity { get; set; } = 1;
 
-        [Display(Name = "Description")]
-         public string? Description { get; set; }
+        public string Summary
+        {
+            get
+            {
+                return Name + Price.ToString("C2");
+            }
+        }
 
+        public string UnitPrice
+        {
+            get
+            {
+                return Price.ToString("C2");
+            }
+        }
 
-        [Display(Name = "Price per yard")]
-        [Required(ErrorMessage = "You must enter the charhge per Yard.")]
+        [Display(Name = "Material Name")]
+        [Required(ErrorMessage = "Material names is required")]
+        [StringLength(300, ErrorMessage = "Material name cannot be more 300 characters Long")]
+        public string Name { get; set; }
+
+        [Display(Name = "Material Description")]
+        [StringLength(3000, ErrorMessage = "Description cannot be more than 3000 characters long")]
+        [DataType(DataType.MultilineText)]
+        public string? Description { get; set; }
+
+        [Display(Name = "Price")]
+        [Required(ErrorMessage = "You must a price.")]
         [DataType(DataType.Currency)]
-        public double PerYardCharge { get; set; }
+        public double Price { get; set; }
 
-        [Display(Name ="Inventory")]
-        public int InventoryID { get; set; }
-        public Inventory Inventory { get; set; }
-       
+        public ICollection<BidMaterial> BidMaterials { get; set; } = new HashSet<BidMaterial>();
+
 
     }
 }

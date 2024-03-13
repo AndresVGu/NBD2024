@@ -37,10 +37,10 @@ namespace NBD2024.Data
 
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<BidLabour> BidLabours { get; set; }
         public DbSet<Labour> Labours { get; set; }
-        public DbSet<LabourType> LabourTypes { get; set; }
+        public DbSet<BidMaterial> BidMaterials { get; set; }
         public DbSet<Material> Materials { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Position> Positions { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Staff> Staff { get; set; }
@@ -65,17 +65,34 @@ namespace NBD2024.Data
                 .HasForeignKey(p => p.ProvinceID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Add a unique index to Inventory Name
-            modelBuilder.Entity<Inventory>()
+            //Add a unique index to Material Name
+            modelBuilder.Entity<Material>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            //Add a unique index to LabourType Name
-            modelBuilder.Entity<LabourType>()
+            //Add a unique index to Labour Name
+            modelBuilder.Entity<Labour>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            
+            //Many To Many Intersections
+            modelBuilder.Entity<BidMaterial>()
+                .HasKey(t => new { t.BidID, t.MaterialID });
+            modelBuilder.Entity<BidLabour>()
+                .HasKey(t => new { t.BidID, t.LabourID });
+
+            modelBuilder.Entity<Material>()
+                .HasMany<BidMaterial>(m => m.BidMaterials)
+                .WithOne(i => i.Materials)
+                .HasForeignKey(i => i.MaterialID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Labour>()
+                .HasMany<BidLabour>(l => l.BidLabours)
+                .WithOne(i => i.Labours)
+                .HasForeignKey(l => l.LabourID)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             //Many to Many Intersection
             modelBuilder.Entity<Position>()
@@ -103,11 +120,11 @@ namespace NBD2024.Data
 
             //Prevent Cascade Delete from Inventory to Material
             //So we are Prevented from deleting a Inventory Item used in a Project
-          //  modelBuilder.Entity<Inventory>()
-            //    .HasMany<Material>(c => c.Materials)
-              //  .WithOne(p => p.Inventory)
-                //.HasForeignKey(p => p.InventoryID)
-                //.OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Material>()
+                //.HasMany<Material>(c => c.Materials)
+              //.WithOne(p => p.Inventory)
+               //.HasForeignKey(p => p.InventoryID)
+               //.OnDelete(DeleteBehavior.Restrict);
 
             //Prevent Cascade Delete from LabourType to Labour
             //So we are Prevented from deleting a LabourType used in a Projeect

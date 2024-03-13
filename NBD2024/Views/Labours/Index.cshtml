@@ -4,45 +4,51 @@
 <form asp-action="Index" method="get">
 <table class="table table-hover">
     <thead>
-        <tr>
+            <!--
+
+        <tr class="table-primary">
             <th>
-                @Html.DisplayNameFor(model => model.HoursSummary)
+                Html.DisplayNameFor(model => model.HoursSummary)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LabourDescription)
+                Html.DisplayNameFor(model => model.LabourDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PriceHours)
+                Html.DisplayNameFor(model => model.PriceHours)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LabourType)
+                Html.DisplayNameFor(model => model.LabourType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Total)
+                Html.DisplayNameFor(model => model.Total)
             </th>
-            <th>
+            <th class="text-center">
                 <a class="btn btn-outline-sucess" asp-action="Create">Add Labour</a>
             </th>
         </tr>
+            -->
     </thead>
     <tbody>
 @foreach (var item in Model) {
+
         <tr>
+                <!--
             <td>
-                @Html.DisplayFor(modelItem => item.HoursSummary)
+                Html.DisplayFor(modelItem => item.HoursSummary)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LabourDescription)
+                Html.DisplayFor(modelItem => item.LabourDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PriceHours)
+                Html.DisplayFor(modelItem => item.PriceHours)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LabourType.Name)
+                Html.DisplayFor(modelItem => item.LabourType.Name)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Total)
+                    Html.DisplayFor(modelItem => item.Total)
                 </td>
+                    -->
                     <td class="text-center">
                         <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-outline-primary"
                            role="button" data-bs-toggle="tooltip" title="Edit @ViewData["ControllerFriendlyName"]">

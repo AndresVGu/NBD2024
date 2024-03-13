@@ -15,8 +15,8 @@ namespace NBD2024.Data
             try
             {
                 //Delete and recreate the Database with every restart
-               // context.Database.EnsureDeleted();
-                //context.Database.EnsureCreated();
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
                 //context.Database.Migrate();
 
                 //To randomly generate data
@@ -383,26 +383,26 @@ namespace NBD2024.Data
     "Garden Tools",
     "Irrigation Systems"
                 };
-                if (!context.Inventories.Any())
+                if (!context.Materials.Any())
                 {
                     double min = 5.0;
-                    double max = 50.0;
+              
                     double maxx = 100.0;
                     foreach (string i in iventoryItems)
                     {
-                        Inventory inventory = new Inventory()
+                        Material inventory = new Material()
                         {
                             Name = i,
-                            Quantity = random.Next(1, 99),
-                            Price = random.NextDouble() * (maxx - min) + min,
-                            PurchasePrice = random.NextDouble() * (max - min) + min
+                            Description = baconNotes[random.Next(5)],
+                            Price = random.NextDouble() * (maxx - min) + min
+
                         };
-                        context.Inventories.Add(inventory);
+                        context.Materials.Add(inventory);
                     }
                     context.SaveChanges();
                 }
 
-                int[] InventoryIDs = context.Inventories.Select( i => i.ID ).ToArray();
+                int[] InventoryIDs = context.Materials.Select( i => i.ID ).ToArray();
                 int InventoryIDCount = InventoryIDs.Length;
 
                 int[] projectIDs = context.Projects.Select(p => p.ID).ToArray();
@@ -410,7 +410,7 @@ namespace NBD2024.Data
 
                 clientIDs = context.Clients.Select(c => c.ID).ToArray();
                 clientIDCount = clientIDs.Length;
-                //Materials
+                /*Materials
                 if (!context.Materials.Any())
                 {
                     foreach(int i in projectIDs)
@@ -438,6 +438,7 @@ namespace NBD2024.Data
                     context.SaveChanges();
                     }
                 }
+                */
 
                 //Seed Labour Types
                 string[] laboursTypes = new string[]
@@ -461,23 +462,10 @@ namespace NBD2024.Data
     "Pest Control",
     "Outdoor Lighting Installation"
                 };
-                if (!context.LabourTypes.Any())
-                {
-                    foreach(string t in laboursTypes)
-                    {
-                        LabourType type = new LabourType
-                        {
-                            Name = t,
-                        };
-                        context.LabourTypes.Add(type); 
-                    }
-                    context.SaveChanges();
-                }
-
                 //Labour
                 int[] projectIDss = context.Projects.Select(p => p.ID).ToArray();
                 int projectIDCountt = projectIDss.Length;
-                int[] typesIDs = context.LabourTypes.Select(t => t.ID).ToArray();
+                int[] typesIDs = context.Labours.Select(t => t.ID).ToArray();
                 int typesIDCount = typesIDs.Length;
                 int[] materialIDs = context.Materials.Select(m => m.ID).ToArray();
                 string[] lDescriptions = new string[]
@@ -505,6 +493,21 @@ namespace NBD2024.Data
 
                 if (!context.Labours.Any())
                 {
+                    foreach(string t in laboursTypes)
+                    {
+                        Labour type = new Labour
+                        {
+                            Name = t,
+                            Description = lDescriptions[random.Next(18)],
+                            Price = random.NextDouble() * (70.0 - 16.0) + 16.0
+                        };
+                        context.Labours.Add(type); 
+                    }
+                    context.SaveChanges();
+                }
+
+               /* if (!context.Labours.Any())
+                {
                     int k = 0;
                     double min = 35.0;
                     double max = 40.0;
@@ -517,7 +520,7 @@ namespace NBD2024.Data
                             k = (k >= typesIDCount) ? 0 : k;
                             Labour l = new Labour()
                             {
-                                
+                                Name = 
                                 LabourTypeID = typesIDs[random.Next(typesIDCount)],
                                 LabourHours = random.NextDouble() * (max - min) + min,
                                 LabourDescription = lDescriptions[random.Next(18)],
@@ -528,7 +531,7 @@ namespace NBD2024.Data
                         }
                         context.SaveChanges();
                     }
-                }
+                }*/
 
                 if(!context.Bids.Any())
                 {
@@ -538,9 +541,10 @@ namespace NBD2024.Data
                         Bid b = new Bid()
                         {
                             BidDate = DateTime.Today.AddDays(-random.Next(1, 365)),
-                            LabourID = typesIDs[random.Next(typesIDCount)],
-                            ProjectID = projectIDss[random.Next(projectIDCountt)],
-                            MaterialID = materialIDs[random.Next(materialIDs.Length)]
+                            
+                          
+                            ProjectID = projectIDss[random.Next(projectIDCountt)]
+            
                         };
                         k++;
                         context.Bids.Add(b);
@@ -548,6 +552,56 @@ namespace NBD2024.Data
                     context.SaveChanges();
                 }
 
+                //ExtraTABLE
+                int[] materialsIDs = context.Materials.Select(s => s.ID).ToArray();
+                int[] laboursIDs = context.Labours.Select(s => s.ID).ToArray();
+                int[]  bidIDs = context.Bids.Select(s => s.ID).ToArray();  
+                int materialCountID = materialsIDs.Length;
+                int labourCountID = laboursIDs.Length;
+
+                if(!context.BidLabours.Any())
+                {
+                    int k = 0;
+                    foreach(int i in bidIDs)
+                    {
+                        int howMany = random.Next(1, 10);
+                        for (int j = 0; j <= howMany; j++)
+                        {
+                            k = (k >= labourCountID) ? 0 : k;
+                            BidLabour bl = new BidLabour()
+                            {
+                                BidID = i,
+                                HoursQuantity = random.NextDouble() * (40.0 - 20.0) + 20.0,
+                                LabourID = laboursIDs[j]
+                            };
+                            k++;
+                            context.BidLabours.Add(bl);
+                        }
+                        context.SaveChanges() ;
+                    }
+                }
+
+                if (!context.BidMaterials.Any())
+                {
+                    int k = 0;
+                    foreach (int i in bidIDs)
+                    {
+                        int howMany = random.Next(1, 10);
+                        for (int j = 0; j <= howMany; j++)
+                        {
+                            k = (k >= materialCountID) ? 0 : k;
+                            BidMaterial bm = new BidMaterial()
+                            {
+                                BidID = i,
+                                MaterialQuantity = random.Next(1, 50),
+                                MaterialID = materialsIDs[j]
+                            };
+                            k++;
+                            context.BidMaterials.Add(bm);
+                        }
+                        context.SaveChanges();
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -4,7 +4,8 @@
    
     <div class="panel-heading">
         <h4 class="panel-title">List of Projects</h4>
-        <a asp-controller="Projects" asp-action="Create" class="btn btn-outline-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Create a new project">Add Project</a>
+
+        <a asp-controller="Projects" asp-action="Create" asp-route-id="@Model" class="btn btn-outline-success" fdprocessedid="k03am" data-bs-toggle="tooltip" title="Create a new project">Add Project</a>
 
     </div>
     <div class="panel-body scrollable-panel">

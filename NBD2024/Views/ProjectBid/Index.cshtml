@@ -1,0 +1,234 @@
+﻿@model IEnumerable<NBD2024.Models.Bid>
+@{
+    NBD2024.Models.Project project = (NBD2024.Models.Project)ViewBag.Project;
+    <partial name="_ProjectDetail" model="project"/>
+    ViewData["Title"] = ViewData["ControllerFriendlyName"];
+}
+<hr />
+
+<form asp-action="Index" method="get">
+   
+    <div class="form-horizontal">
+        <div>
+            <table class="table table-hover">
+                <tr class="table-secondary">
+                    <th>
+                        <input type="submit" name="actionButton" value="Bid Date" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Bid Date" />
+
+                    </th>
+
+                    <th>
+                        <input type="submit" name="actionButton" value="Materials Info" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Materials" />
+
+
+                    </th>
+
+
+
+                    <th>
+                        <input type="submit" name="actionButton" value="Material Total" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Amount" />
+
+
+                    </th>
+
+                    <th>
+                        <input type="submit" name="actionButton" value="Labour Info" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Amount" />
+
+
+                    </th>
+
+                    <th>
+                        <input type="submit" name="actionButton" value="Labour Total" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Amount" />
+
+
+                    </th>
+                    <th>
+                        <input type="submit" name="actionButton" value="Total" class="btn btn-link " data-bs-toggle="tooltip" title="Sort by Amount" />
+
+
+                    </th>
+                    <th class="text-center">
+                        <a class="btn btn-outline-success" asp-action="Create">Add Bid</a>
+                    </th>
+                </tr>
+
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BidDate)
+                        </td>
+
+                        <td>
+                            @{
+                                int specCount = item.BidMaterials.Count;
+                                if (specCount > 0)
+                                {
+                                    string firstCond = item.BidMaterials.FirstOrDefault().Materials.Name;
+                                    if (specCount > 1)
+                                    {
+                                        string specList = "";
+                                        var c = item.BidMaterials.ToList();
+                                        for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                        {
+                                            specList += c[i].Materials.Name + " <br />";
+                                        }
+                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
+                                           aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
+                                            @firstCond <span class="badge bg-info">@specCount</span>
+                                        </a>
+                                        <div class="collapse" id="collapseSpecalty@(item.ID)">
+                                            @Html.Raw(specList)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @firstCond
+                                    }
+                                }
+                            }
+
+
+                        </td>
+
+                        <td>
+                            @{
+
+                                if (specCount > 0)
+                                {
+                                    double firstCond = item.BidMaterials.FirstOrDefault().Materials.Price;
+                                    if (specCount > 1)
+                                    {
+                                        double specList = 0.0;
+                                        var c = item.BidMaterials.ToList();
+                                        for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                        {
+                                            specList += c[i].MaterialQuantity * c[i].Materials.Price;
+                                        }
+
+
+                                        @Html.Raw(specList.ToString("C2"))
+
+                                    }
+                                    else
+                                    {
+                                        @firstCond
+                                    }
+                                }
+                            }
+                        </td>
+
+                        <!--Labour-->
+                        <td>
+                            @{
+                                int labCount = item.BidLabours.Count;
+                                if (labCount > 0)
+                                {
+                                    string firstCond = item.BidLabours.FirstOrDefault().Labours.Name;
+                                    if (labCount > 1)
+                                    {
+                                        string labList = "";
+                                        var l = item.BidLabours.ToList();
+                                        for (int i = 1; i < labCount; i++)//Skip the first because we have it already
+                                        {
+                                            labList += l[i].Labours.Name + " <br />";
+                                        }
+                                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
+                                           aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
+                                            @firstCond <span class="badge bg-info">@labCount</span>
+                                        </a>
+                                        <div class="collapse" id="collapseSpecalty@(item.ID)">
+                                            @Html.Raw(labList)
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @firstCond
+                                    }
+                                }
+                            }
+
+
+                        </td>
+
+                        <td>
+                            @{
+
+                                if (labCount > 0)
+                                {
+                                    double firstCond = item.BidLabours.FirstOrDefault().Labours.Price;
+                                    if (labCount > 1)
+                                    {
+                                        double labList = 0.0;
+                                        var c = item.BidLabours.ToList();
+                                        for (int i = 1; i < labCount; i++)//Skip the first because we have it already
+                                        {
+                                            labList += c[i].HoursQuantity * c[i].Labours.Price;
+                                        }
+
+
+                                        @Html.Raw(labList.ToString("C2"))
+
+
+
+                                    }
+                                    else
+                                    {
+                                        @firstCond
+                                    }
+                                }
+                            }
+
+
+
+                        <td>
+                                @{
+
+
+
+
+                                    double laboList = 0.0;
+                                    double matList = 0.0;
+                                    var la = item.BidLabours.ToList();
+                                    var m = item.BidMaterials.ToList();
+                                    for (int i = 1; i < labCount; i++)//Skip the first because we have it already
+                                    {
+                                        laboList += la[i].HoursQuantity * la[i].Labours.Price;
+
+                                    }
+
+                                    for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                    {
+                                        matList += m[i].MaterialQuantity * m[i].Materials.Price;
+                                    }
+
+
+                                    @Html.Raw((laboList + matList).ToString("C2"))
+
+
+                                }
+
+                        </td>
+
+                    </tr>
+                }
+               
+
+            </table>
+        </div>
+    </div>
+    <partial name="_PagingNavBar" />
+    <div>
+        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@project.ID">Edit @project.ProjectName</a> |
+        <a href='@ViewData["returnURL"]'>Back to Project List</a>
+    </div>
+</form>
+@section Scripts {
+    <script type="text/javascript">
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
+
