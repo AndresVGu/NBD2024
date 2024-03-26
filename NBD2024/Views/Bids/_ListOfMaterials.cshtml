@@ -3,6 +3,9 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h4 class="panel-title">Materials</h4>
+        <div class="card-body">
+            @Html.DropDownList("LabourID", null, htmlAttributes: new { @size = 6, @class = "form-control" })
+        </div>
     </div>
     <div class="panel-body scrollable-panel">
         <table class="table table-striped">

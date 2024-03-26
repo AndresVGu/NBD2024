@@ -38,11 +38,39 @@
             var activeTab = $(this).attr("id");
             refreshTab(activeTab);
         });
-        $(".tab-content").on("click", ".linkClick", function (event) {
+
+      //  $(".linkClick").click(function (event) {
+      //      event.preventDefault();
+       //     var address = $(this).attr("href");
+       //     var lookup = address.split("/")[1];
+       //     var id = $("#" + lookup + "ID").val();
+       //     var caption = ("#" + lookup).html();
+       //     if (id == null) {
+      //          alert("Error: no value")
+      //      }
+       //     else {
+       //         window.location.href = address + "/" + id;
+       //     }
+       // });
+
+       $(".tab-content").on("click", ".linkClick", function (event) {
+            event.preventDefault();
+           var address = $(this).attr("href");
+            var lookup = address.split("/")[1];
+           var id = $("#MaterialID").val();
+            var caption = $("#" + lookup).html();
+           if (id == null) {
+                alert("Error: no value selected from the " + caption + " list!");
+           } else {
+               window.location.href = address + "/" + id;
+           }
+       });
+
+        $(".tab-content").on("click", ".linkClickl", function (event) {
             event.preventDefault();
             var address = $(this).attr("href");
             var lookup = address.split("/")[1];
-            var id = $("#" + lookup + "ID").val();
+            var id = $("#LabourID").val();
             var caption = $("#" + lookup).html();
             if (id == null) {
                 alert("Error: no value selected from the " + caption + " list!");
@@ -50,10 +78,13 @@
                 window.location.href = address + "/" + id;
             }
         });
+
         $(function () {
             setTimeout(function () {
                 $("#@ViewData["Tab"]").trigger('click');
             }, 10);
         });
+
+       
     </script>
 }

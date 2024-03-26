@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NBD2024")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c5f4b339f23259373ea84957fb567fc4be6ab500")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6e0744b6a6a728f25b966cb253fea2488e85540")]
 [assembly: System.Reflection.AssemblyProductAttribute("NBD2024")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NBD2024")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

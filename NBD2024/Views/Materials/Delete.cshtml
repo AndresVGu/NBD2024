@@ -31,6 +31,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <partial name="_BackToList" />
+        <a asp-controller="Lookup" asp-action="Index">Back to List</a>
     </form>
 </div>

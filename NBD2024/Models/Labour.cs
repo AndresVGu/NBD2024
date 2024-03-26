@@ -9,7 +9,7 @@ namespace NBD2024.Models
         {
             get
             {
-                return Name + Price.ToString("C2");
+                return Name + " - " + Price.ToString("C2");
             }
         }
 
