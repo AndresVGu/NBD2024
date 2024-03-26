@@ -54,7 +54,7 @@
         </dd>
 
 
-        <dt class="col-sm-2">
+        <dt class="col-sm-2"> 
             @Html.DisplayNameFor(model => model.Projects)
         </dt>
 
@@ -75,7 +75,11 @@
                     {
                         <tr>
                             <td>
-                                <a asp-controller="Projects" asp-action="Details" asp-route-id="@item.ID">
+                                <a asp-controller="ProjectBid" asp-action="Index" asp-route-ProjectID="@item.ID" class="btn btn-outline-primary" fdprocessedid="rpbgq" data-bs-toggle="tooltip" title="Project Details">
+                                    @Html.DisplayFor(modelItem => item.ProjectName)
+                                </a>
+
+                                <a asp-controller ="ProjectBid" asp-action="Index" asp-route-ProjectID="@item.ID">
                                     @Html.DisplayFor(modelItem => item.ProjectName)
                                 </a>
                             </td>

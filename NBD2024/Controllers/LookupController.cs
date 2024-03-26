@@ -24,7 +24,7 @@ namespace NBD2024.Controllers
         {
             ViewData["MaterialID"] = new
                 SelectList(_context.Materials
-                .OrderBy(m => m.Name), "ID", "Name");
+                .OrderBy(m => m.Name), "ID", "Summary");
             return PartialView("_Material");
         }
 
@@ -32,7 +32,7 @@ namespace NBD2024.Controllers
         {
             ViewData["LabourID"] = new
                 SelectList(_context.Labours
-                .OrderBy(l => l.Name), "ID", "Name");
+                .OrderBy(l => l.Name), "ID", "Summary");
             return PartialView("_Labour");
         }
     }

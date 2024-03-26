@@ -91,13 +91,23 @@
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
     </div>
+    
+        
+
         <div class="form-group  order-md-2">
             <input type="submit" class="btn btn-primary btn-lg " />
+            <button type="button" class="btn btn-secondary" id="fillExampleData">
+                Fill with Example
+                Data
+            </button>
         </div>
         <div class=" order-md-3">
             <a asp-action="Index">Back to List</a>
         </div>
+       
         </form>
+        <br />
+   
 </div>
 
 
@@ -113,4 +123,30 @@
             refreshDDL('CityID', URL, true, 'Select a Province with Cities first', false, null, true);
         });
     </script>
+
+<script type="text/javascript">
+    //document.getElementById('fillExampleData').addEventListener
+    
+    $("#fillExampleData").on('click', function () {
+        var exampleData = {
+            FirstName: 'John',
+            LastName: 'Doe',
+            MiddleName: 'M',
+            CompanyName: 'Acme Inc.',
+            Phone: '1234567891',
+            AddressCountry: 'Canada',
+            AddressStreet: '100 Niagara College,
+            
+            PostalCode: 'LC37L3'
+        };
+        Object.keys(exampleData).forEach(function (key) {
+            var element = document.getElementById(key);
+            if (element) {
+                element.value = exampleData[key];
+            }
+        });
+        $('#ProvinceID').change();
+    });
+    </script>
+
 }
