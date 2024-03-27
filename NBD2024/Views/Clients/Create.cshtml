@@ -1,13 +1,11 @@
 ﻿@model NBD2024.Models.Client
 
-@{
-    ViewData["Title"] = "Create";
-}
+<partial name="_ViewHeading" />
+
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 
 
-<h2>New Client</h2>
  
 <div class="row">
     
@@ -58,11 +56,7 @@
         
             
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AddressCountry" class="control-label">Country*:</label>
-                <input asp-for="AddressCountry" class="form-control" placeholder="E.g. Canada" />
-                <span asp-validation-for="AddressCountry" class="text-danger" ></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="AddressStreet" class="control-label">Street Number*:</label>
                 <input asp-for="AddressStreet" class="form-control" placeholder="E.g. 100 Niagara College Boulevard" />
@@ -90,16 +84,18 @@
                 <input asp-for="PostalCode" class="form-control" placeholder="E.g. LC37L3" />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="AddressCountry" class="control-label">Country*:</label>
+                <input asp-for="AddressCountry" class="form-control" placeholder="E.g. Canada" value="Canada" />
+                <span asp-validation-for="AddressCountry" class="text-danger"></span>
+            </div>
     </div>
     
         
 
         <div class="form-group  order-md-2">
             <input type="submit" class="btn btn-primary btn-lg " />
-            <button type="button" class="btn btn-secondary" id="fillExampleData">
-                Fill with Example
-                Data
-            </button>
         </div>
         <div class=" order-md-3">
             <a asp-action="Index">Back to List</a>
@@ -124,29 +120,6 @@
         });
     </script>
 
-<script type="text/javascript">
-    //document.getElementById('fillExampleData').addEventListener
-    
-    $("#fillExampleData").on('click', function () {
-        var exampleData = {
-            FirstName: 'John',
-            LastName: 'Doe',
-            MiddleName: 'M',
-            CompanyName: 'Acme Inc.',
-            Phone: '1234567891',
-            AddressCountry: 'Canada',
-            AddressStreet: '100 Niagara College,
-            
-            PostalCode: 'LC37L3'
-        };
-        Object.keys(exampleData).forEach(function (key) {
-            var element = document.getElementById(key);
-            if (element) {
-                element.value = exampleData[key];
-            }
-        });
-        $('#ProvinceID').change();
-    });
-    </script>
+
 
 }

@@ -18,11 +18,19 @@ namespace NBD2024.Controllers
         }
 
         //GET: BID
-        public async Task<IActionResult> Index(int? ProjectID, int? page,
+        public async Task<IActionResult> Index(int? ProjectID, int? page,DateTime BidDate,
             int? pageSizeID, int? BidID, string actionButton,
             string SearchString, string sortDirection = "desc",
             string sortField = "Bid")
         {
+           /* if(BidDate ==DateTime.MinValue)
+            {
+                BidDate = _context.Bids.Min(b => b.BidDate).Date;
+                ViewData["BidDate"] = BidDate.ToString("yyyy/MM/dd");
+
+            }
+            ViewData["Filtering"] = "btn-outline-secondary";
+            int numberFilters = 0;*/
             ViewData["returnURL"] = MaintainURL.ReturnURL(HttpContext, "Projects");
 
             PopulateDropDownLists();
@@ -33,6 +41,7 @@ namespace NBD2024.Controllers
                        .Include(a => a.BidMaterials).ThenInclude(a => a.Materials)
                        .Include(a => a.BidLabours).ThenInclude(a => a.Labours)
                        .Include(a => a.Project)
+                       
                        where a.ProjectID == ProjectID.GetValueOrDefault()
                        select a;
 
@@ -45,6 +54,22 @@ namespace NBD2024.Controllers
 
             ViewBag.Project=project;
 
+           /* if (BidDate <= DateTime.Today)
+            {
+                pbid = pbid.Where(b => b.BidDate == BidDate);
+                numberFilters++;
+            }
+            //Feedback about the state of the filters
+            if (numberFilters != 0)
+            {
+                //Toggle the Open/Closed state of the collapse depending in if we are filtering
+                ViewData["Filtering"] = "btn-danger";
+                //Show how many filters have been applied
+                ViewData["numberFilters"] = "(" + numberFilters.ToString()
+                    + " Filter" + (numberFilters > 1 ? "s" : "") + " Applied)";
+                //Keep the Bootstrap collapse open
+                @ViewData["ShowFilter"] = " show";
+            }*/
             //Handle Paging
             int pageSize = PageSizeHelper.SetPageSize(HttpContext, pageSizeID, ControllerName());
             ViewData["pageSizeID"] = PageSizeHelper.PageSizeList(pageSize);

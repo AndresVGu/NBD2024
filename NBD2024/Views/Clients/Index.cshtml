@@ -15,6 +15,7 @@
     <!--Memory last sort direction-->
     <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
     <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+     
 
     <div class="form-horizontal">
         <button class="btn @ViewData["Filtering"]" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
@@ -29,8 +30,9 @@
                     <!--Select by string-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Client:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="E.g.Name/Company/Phone/Address/City " })
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="E.g. LastName/Company/Phone/Address/City " })
                     </div>
+
 
                     <!--Select by Province -->
 
@@ -51,6 +53,15 @@
             </div>
         </div>
     </div>
+
+    @if(TempData["AlertMessageDelete"] != null)
+    {
+        <br />
+        <div class="alert alert-success">
+           <strong>Success !</strong> @TempData["AlertMessageDelete"]
+        </div>
+        
+    }
 
     <table class="table table-hover">
         <thead>
@@ -115,14 +126,22 @@
     <partial name="_PagingNavBar" />
 </form>
 
+@section Styles {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+}
+
 @section Scripts {
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    
     <script type="text/javascript">
-        $('#SearchClient').autocomplete({
+        $('#SearchString').autocomplete({
             minLength: 1,
-            source: '@Url.Action("GetClients", "Client")'
+            source: '@Url.Action("GetClients", "Clients")'
         });
     </script>
+
+
     <!--Tooltips-->
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

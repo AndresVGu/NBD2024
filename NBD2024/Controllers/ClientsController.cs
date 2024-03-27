@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace NBD2024.Controllers
 {
     public class ClientsController : ElephantController
-    {
+    { 
         private readonly NBDContext _context;
 
         public ClientsController(NBDContext context)
@@ -23,7 +23,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients
-        public async Task<IActionResult> Index(string SearchString, int? CityID,
+        public async Task<IActionResult> Index(string SearchString, int? CityID, 
            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Client")
         {
 
@@ -32,7 +32,7 @@ namespace NBD2024.Controllers
 
             //List of sort options
             //make sure this array has matchin values to the colum headings
-            string[] sortOptions = new[] { "Client", "City", "Province", "Contact", "Phone" };
+            string[] sortOptions = new[] { "Client", "City", "Company", "Phone" };
             PopulateDropDownLists();
 
             var clients = _context.Clients
@@ -43,6 +43,8 @@ namespace NBD2024.Controllers
 
 
             #region Filters
+            
+
             //filters:
             if (CityID.HasValue)
             {
@@ -62,6 +64,7 @@ namespace NBD2024.Controllers
                                         || c.LastName.ToUpper().Contains(SearchString.ToUpper())
                                         || c.MiddleName.ToUpper().Contains(SearchString.ToUpper())
                                         || c.Phone.Contains(SearchString)
+                                        || c.FirstName.ToUpper() + " " + c.LastName.ToUpper() == SearchString.ToUpper()
                 );
 
                 numberFilters++;
@@ -126,17 +129,17 @@ namespace NBD2024.Controllers
                 }
 
             }
-            else if (sortField == "Province")
+            else if (sortField == "Company")
             {
                 if (sortDirection == "asc")
                 {
                     clients = clients
-                        .OrderBy(c => c.City.Province.Name);
+                        .OrderBy(c => c.CompanyName);
                 }
                 else
                 {
                     clients = clients
-                        .OrderByDescending(c => c.City.Province.Name);
+                        .OrderByDescending(c => c.CompanyName);
                 }
             }
             else if (sortField == "City")
@@ -152,19 +155,7 @@ namespace NBD2024.Controllers
                         .OrderByDescending(c => c.City.Name);
                 }
             }
-            else if (sortField == "Company")
-            {
-                if (sortDirection == "asc")
-                {
-                    clients = clients
-                        .OrderBy(c => c.CompanyName);
-                }
-                else
-                {
-                    clients = clients
-                        .OrderByDescending(c => c.CompanyName);
-                }
-            }
+           
             //set sort for next time
             ViewData["sortField"] = sortField;
             ViewData["sortDirection"] = sortDirection;
@@ -219,19 +210,16 @@ namespace NBD2024.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //TODO:
-                    //try to fix this code
-                    //_context.Add(client);
-                    //await _context.SaveChangesAsync();
-                    // return RedirectToAction(nameof(Index));
+                    
                     _context.Add(client);
                     await _context.SaveChangesAsync();
-                   // return RedirectToAction("Detais", new { client.ID });
+                    //We can add any name here
+                    TempData["AlertMessage"] = "Client Created Sucessfully...!";
+                    return RedirectToAction("Details", new { client.ID });
+                   
                 }
-               // _context.Add(client);
-               // await _context.SaveChangesAsync();
-                // return RedirectToAction(nameof(Index));
-               return RedirectToAction("Details", new { client.ID });
+               
+               
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -294,6 +282,7 @@ namespace NBD2024.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["AlertMessage"] = "Client Updated Successfully...!";
                     return RedirectToAction("Details", new {clientToUpdate.ID});
                 }
                 catch (RetryLimitExceededException /* dex */)
@@ -319,10 +308,7 @@ namespace NBD2024.Controllers
             }
 
             PopulateDropDownLists(clientToUpdate);
-            //await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            //return View(clientToUpdate);
-            //return RedirectToAction("Details", new { clientToUpdate.ID });
+      
             return View(clientToUpdate);
         }
 
@@ -368,6 +354,7 @@ namespace NBD2024.Controllers
 
                 await _context.SaveChangesAsync();
                 // return RedirectToAction(nameof(Index));
+                TempData["AlertMessageDelete"] = "Client Deleted Sucessfully...!";
                 return Redirect(ViewData["returnURL"].ToString());
             }
             catch (DbUpdateException dex)
@@ -447,6 +434,17 @@ namespace NBD2024.Controllers
         public JsonResult GetCities(string ProvinceID)
         {
             return Json(CitySelectList(ProvinceID, null));
+        }
+
+        public JsonResult GetClients(string term)
+        {
+            var result = from c in _context.Clients
+                         where c.LastName.ToUpper().Contains(term.ToUpper())
+                         || c.FirstName.ToUpper().Contains(term.ToUpper())
+                         orderby c.FirstName, c.LastName
+                         select new { value = c.FirstName + " " + c.LastName };
+
+            return Json(result);
         }
 
         #endregion

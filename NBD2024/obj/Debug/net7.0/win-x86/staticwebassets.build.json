@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "s70QgmrKwga636Va3uQrEzvJsFB9IJXmLpn2NJ4Cqvo=",
+  "Hash": "gVcarcINd4/pP+A3Yyz3uOn6uWA+8UHjlNClgeIBXOg=",
   "Source": "NBD2024",
   "BasePath": "_content/NBD2024",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Term 4\\Demos\\NBD2024\\NBD2024\\wwwroot\\js\\alerts.js",
+      "SourceId": "NBD2024",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Term 4\\Demos\\NBD2024\\NBD2024\\wwwroot\\",
+      "BasePath": "_content/NBD2024",
+      "RelativePath": "js/alerts.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\alerts.js"
     },
     {
       "Identity": "C:\\Term 4\\Demos\\NBD2024\\NBD2024\\wwwroot\\js\\multiselect.js",

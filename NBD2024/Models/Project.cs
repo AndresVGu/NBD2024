@@ -101,7 +101,7 @@ namespace NBD2024.Models
 
         //BidDate
         [Display(Name = "Start Date")]
-        [Required(ErrorMessage = "You cannot leave bid date blank.")]
+        [Required(ErrorMessage = "You cannot leave start date blank.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
           public DateTime StartTime { get; set; }

@@ -15,19 +15,31 @@
 
                 <div class="row">
                    
-                    
+                     
 
                     
                     <!--Select by string-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Search Project:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "E.g. ProjectName/Client/Company/City " })
                     </div>
                     <!--Select by client-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Select by Clients:</label>
-                        @Html.DropDownList("ClientID", null, "All Clients", htmlAttributes: new { @class = "form-control" })
+
+                        @Html.DropDownList("ClientID", null, "All Clients", htmlAttributes: new { @class = "form-control", id = "dropdownClients" })
                     </div>
+                    <!--Select by Dates-->
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Start Date: </label>
+                        @Html.TextBox("StartDate", @ViewData["StartDate"], new {@class= "form-control", type ="date"})
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">End Date: </label>
+                        @Html.TextBox("EndDate", @ViewData["EndDate"], new { @class = "form-control", type = "date" })
+                    </div>
+
                     <!--Button-->
                     <div class="form-group col-md-4 align-self-end">
                         <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-success" data-bs-toggle="tooltip" title="Apply filters" />
@@ -37,6 +49,15 @@
             </div>
         </div>
     </div>
+
+    @if (TempData["AlertMessage"] != null)
+    {
+        <br />
+        <div class="alert alert-success">
+            <strong>Success !</strong> @TempData["AlertMessage"]
+        </div>
+
+    }
 
 
     <table class="table table-hover">
@@ -102,12 +123,24 @@
     </table>
     <partial name="_PagingNavBar" />
 </form>
+
+@section Styles {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+}
 @section Scripts {
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
     <!--Tooltips-->
     <script type="text/javascript">
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    </script>
+
+    <script>
+        $('#dropdownClients').select2({ placeholder: "Eg. John Doe", width:"100%"});
     </script>
 }

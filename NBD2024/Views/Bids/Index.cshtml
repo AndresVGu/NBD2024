@@ -23,8 +23,8 @@
                     
                     <!--Select by string-->
                     <div class="form-group col-md-4">
-                        <label class="control-label">Search Project:</label>
-                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                        <label class="control-label">Search By Bid:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder="Eg Date/ProjectName" })
                     </div>
                     
                     <!--Button-->
@@ -84,7 +84,7 @@
                     <a  class="btn btn-outline-success" asp-action="Create">Add Bid</a>
             </th>
         </tr>
-    </thead>
+    </thead> 
     <tbody>
 @foreach (var item in Model) {
         <tr>
@@ -100,14 +100,14 @@
                             int specCount = item.BidMaterials.Count;
                             if (specCount > 0)
                             {
-                                string firstCond = item.BidMaterials.FirstOrDefault().Materials.Name;
+                                string firstCond = "Show Materials";
                                 if (specCount > 1)
                                 {
                                     string specList = "";
                                     var c = item.BidMaterials.ToList();
-                                    for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                    for (int i = 0; i < specCount; i++)//Skip the first because we have it already
                                     {
-                                        specList +=  c[i].Materials.Name  + " <br />";
+                                        specList += c[i].MaterialQuantity + " " + c[i].Materials.Name + ", " + $"{c[i].Materials.UnitPrice} /up" + " <br />";
                                     }
                                     <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
                                        aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
@@ -161,14 +161,15 @@
                             int labCount = item.BidLabours.Count;
                             if (labCount > 0)
                             {
-                                string firstCond = item.BidLabours.FirstOrDefault().Labours.Name;
+                                string firstCond = "Show Labors";
+                                //item.BidLabours.FirstOrDefault().Labours.Name;
                                 if (labCount > 1)
                                 {
                                     string labList = "";
                                     var l = item.BidLabours.ToList();
-                                    for (int i = 1; i < labCount; i++)//Skip the first because we have it already
+                                    for (int i = 0; i < labCount; i++)//Skip the first because we have it already
                                     {
-                                        labList += l[i].Labours.Name + " <br />";
+                                        labList += $"{l[i].HoursQuantity.ToString("f2")}hrs " + l[i].Labours.Name + ", " + $"{l[i].Labours.UnitPrice} /hr" + " <br />";
                                     }
                                     <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
                                        aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">

@@ -2,9 +2,20 @@
 
 <partial name="_ViewHeading" />
 <hr />
+
+@if (TempData["AlertMessage"] != null)
+{
+    <br />
+    <div class="alert alert-success">
+        <strong>Success !</strong> @TempData["AlertMessage"]
+    </div>
+
+}
+
 <div class="row">
     <div class="col-6">
-
+        <h5>Project Information:</h5>
+        <hr/>
         <dl class="row">
             <dt class = "col-sm-4">
                 @Html.DisplayNameFor(model => model.ProjectName)
@@ -12,8 +23,7 @@
             <dd class = "col-sm-8">
                 @Html.DisplayFor(model => model.ProjectName)
             </dd>
-        
-      
+              
             <dt class = "col-sm-4">
                 @Html.DisplayNameFor(model => model.StartTime)
             </dt>
@@ -34,11 +44,40 @@
             <dd class = "col-sm-8">
                 @Html.DisplayFor(model => model.ProjectSite)
             </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.SetupNotes)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.SetupNotes)
+            </dd>
         </dl>
     </div>
-    <div class="col -6">
-
+    <div class="col-6">
+        <h5>Client Information:</h5>
+        <hr />
         <dl class="row">
+            
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Client)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Client.FullName)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Client.Phone)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Client.PhoneFormatted)
+            </dd>
+
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.City.Province)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.City.ProvinceChar)
+            </dd>
             <dt class = "col-sm-4">
                 @Html.DisplayNameFor(model => model.City)
             </dt>
@@ -46,19 +85,9 @@
                 @Html.DisplayFor(model => model.City.Name)
             </dd>
         
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.SetupNotes)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.SetupNotes)
-            </dd>
+            
         
-            <dt class = "col-sm-4">
-                @Html.DisplayNameFor(model => model.Client)
-            </dt>
-            <dd class = "col-sm-8">
-                @Html.DisplayFor(model => model.Client.AddressCountry)
-            </dd>
+            
 
     </dl>
     </div>
@@ -116,7 +145,9 @@
     </div>
     
 </form>
-<div>
+<div> 
     <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
+    
+   
 </div>

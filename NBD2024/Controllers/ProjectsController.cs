@@ -23,9 +23,25 @@ namespace NBD2024.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index(string SearchString, int? ClientID,
+        public async Task<IActionResult> Index(string SearchString, int? ClientID, string SearchClient, DateTime StartDate, DateTime EndDate,
            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "ClientID")
         {
+            //set the range filter based in values in the database
+            if (EndDate == DateTime.MinValue)
+            {
+                StartDate = _context.Projects.Min(p => p.StartTime).Date;
+                EndDate = _context.Projects.Max(p => p.StartTime).Date;
+                ViewData["StartDate"] = StartDate.ToString("yyyy/MM/dd");
+                ViewData["EndDate"] = EndDate.ToString("yyyy/MM/dd");
+
+            }
+            //Check the order of the dates and swap them if required
+            if(EndDate < StartDate)
+            {
+                DateTime temp = EndDate;
+                EndDate = StartDate;
+                StartDate = temp;
+            }
             //Count the number of filters applied - start by assuming no filters
             ViewData["Filtering"] = "btn-outline-secondary";
             int numberFilters = 0;
@@ -37,10 +53,15 @@ namespace NBD2024.Controllers
             var projects = _context.Projects
                 .Include(p => p.Client)
                 .Include(p => p.City)
+                .Where(p => p.StartTime
+                >= StartDate && p.StartTime <= EndDate.AddDays(1))
+                .OrderByDescending(p => p.StartTime)
                 .AsNoTracking();
 
             #region Filters
             //filters:
+
+
             if (ClientID.HasValue)
             {
                 projects = projects.Where(p => p.ClientID == ClientID);
@@ -228,13 +249,12 @@ namespace NBD2024.Controllers
                 {
                     _context.Add(project);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new {project.ID});
-                    //Deberia agragar una tabla ProjectMaterials
+                    TempData["AlertMessage"] = "Project Created Sucessfully...!";
+                    return RedirectToAction("Index", new {project.ID});
+                    
                     
                 }
-                _context.Add(project);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -293,9 +313,10 @@ namespace NBD2024.Controllers
             {
                 try
                 {
-                    // await _context.SaveChangesAsync();
-                    // return RedirectToAction(nameof(Index));
-                    return RedirectToAction("Details", new { projectToUpdate.ID });
+                     await _context.SaveChangesAsync();
+                    
+                    TempData["AlertMessage"] = "Project Updated Sucessfully...!";
+                    return RedirectToAction("Index", new { projectToUpdate.ID });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -320,8 +341,7 @@ namespace NBD2024.Controllers
             }
             PopulateDropDownLists(projectToUpdate);
             PopulateCityDropDownLists(projectToUpdate);
-            await _context.SaveChangesAsync();
-           // return RedirectToAction(nameof(Index));
+            
             return View(projectToUpdate);
         }
 
@@ -367,7 +387,8 @@ namespace NBD2024.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-               return Redirect(ViewData["returnURL"].ToString());
+                TempData["AlertMessage"] = "Project Deleted Sucessfully...!";
+                return Redirect(ViewData["returnURL"].ToString());
             }
             catch (DbUpdateException)
             {

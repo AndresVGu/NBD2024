@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Term 4\\Demos\\NBD2024\\NBD2024\\wwwroot\\js\\alerts.js",
+      "PackagePath": "staticwebassets\\js\\alerts.js"
+    },
+    {
       "Id": "C:\\Term 4\\Demos\\NBD2024\\NBD2024\\wwwroot\\js\\multiselect.js",
       "PackagePath": "staticwebassets\\js\\multiselect.js"
     },

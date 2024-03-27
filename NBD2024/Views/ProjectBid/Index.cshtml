@@ -5,11 +5,25 @@
     ViewData["Title"] = ViewData["ControllerFriendlyName"];
 }
 <hr />
-
+<h5 class="text-center">Bid Information</h5>
 <form asp-action="Index" method="get">
    
     <div class="form-horizontal">
-        <div>
+       
+        <div class="row">
+            <!--
+                
+                
+            <div class="form-group col-md-4">
+                <label class="ccontrol-label">Bid Date:</label>
+                Html.TextBox("BidDate", null, new { class = "form-control", type = "date" })
+            </div>
+            <div class="form-group col-md-4 align-self-end">
+                <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary"/>
+                <a asp-action="Index" class="btn btn-outline-danger">Clear</a>
+            </div>
+
+               -->
             <table class="table table-hover">
                 <tr class="table-secondary">
                     <th>
@@ -48,7 +62,7 @@
 
                     </th>
                     <th class="text-center">
-                        <a class="btn btn-outline-success" asp-action="Create">Add Bid</a>
+                        <a class="btn btn-outline-success" asp-action="Create" asp-controller="Bids">Add Bid</a>
                     </th>
                 </tr>
 
@@ -64,14 +78,14 @@
                                 int specCount = item.BidMaterials.Count;
                                 if (specCount > 0)
                                 {
-                                    string firstCond = item.BidMaterials.FirstOrDefault().Materials.Name;
+                                    string firstCond = "Show Materials";
                                     if (specCount > 1)
                                     {
                                         string specList = "";
                                         var c = item.BidMaterials.ToList();
-                                        for (int i = 1; i < specCount; i++)//Skip the first because we have it already
+                                        for (int i = 0; i < specCount; i++)//Skip the first because we have it already
                                         {
-                                            specList += c[i].Materials.Name + " <br />";
+                                            specList += c[i].MaterialQuantity + " " + c[i].Materials.Name+", " + $"{c[i].Materials.UnitPrice} /up" + " <br />";
                                         }
                                         <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
                                            aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
@@ -124,15 +138,15 @@
                                 int labCount = item.BidLabours.Count;
                                 if (labCount > 0)
                                 {
-                                    string firstCond = item.BidLabours.FirstOrDefault().Labours.Name;
+                                    string firstCond = "Show Labours";
                                     if (labCount > 1)
                                     {
                                         string labList = "";
                                         var l = item.BidLabours.ToList();
-                                        for (int i = 1; i < labCount; i++)//Skip the first because we have it already
+                                        for (int i = 0; i < labCount; i++)//Skip the first because we have it already
                                         {
-                                            labList += l[i].Labours.Name + " <br />";
-                                        }
+                                            labList += $"{l[i].HoursQuantity.ToString("f2")}hrs " + l[i].Labours.Name+", "+ $"{l[i].Labours.UnitPrice} /hr" + " <br />";
+                                                        }
                                         <a class="" role="button" data-bs-toggle="collapse" href="#collapseSpecalty@(item.ID)"
                                            aria-expanded="false" aria-controls="collapseSpecalty@(item.ID)">
                                             @firstCond <span class="badge bg-info">@labCount</span>
@@ -210,6 +224,21 @@
 
                         </td>
 
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.ID" asp-controller="Bids" class="btn btn-sm btn-outline-primary"
+                               role="button" data-bs-toggle="tooltip" title="Edit @ViewData["ControllerFriendlyName"]">
+                                &#x270E;
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.ID" asp-controller="Bids" class="btn btn-sm btn-outline-primary"
+                               role="button" data-bs-toggle="tooltip" title="@ViewData["ControllerFriendlyName"] Details">
+                                &#x1F50E;
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.ID" asp-controller="Bids" class="btn btn-sm btn-outline-primary"
+                               role="button" data-bs-toggle="tooltip" title="Delete @ViewData["ControllerFriendlyName"]">
+                                &#x274C;
+                            </a>
+                        </td>
+
                     </tr>
                 }
                
@@ -219,8 +248,12 @@
     </div>
     <partial name="_PagingNavBar" />
     <div>
-        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@project.ID">Edit @project.ProjectName</a> |
-        <a href='@ViewData["returnURL"]'>Back to Project List</a>
+        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@project.ID">Edit @project.ProjectName</a> | 
+        
+        
+
+        <a asp-action="Index" asp-controller="Projects">Back to Project List</a>
+        
     </div>
 </form>
 @section Scripts {

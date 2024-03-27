@@ -16,6 +16,24 @@ namespace NBD2024.Models
             }
         }
 
+        [DisplayFormat(NullDisplayText = "No Province Specified")]
+        public string ProvinceChar
+        {
+            get
+            {
+                return ProvinceID;
+            }
+        }
+
+        [DisplayFormat(NullDisplayText = "No City Specified")]
+        public string CityChar
+        {
+            get
+            {
+                return Name;
+            }
+        }
+
         [Display(Name = "City Name")]
         [Required(ErrorMessage = "You cannot leave the name of the city blank.")]
         [StringLength(255, ErrorMessage = "City name cannot be more than 255 characters log.")]
