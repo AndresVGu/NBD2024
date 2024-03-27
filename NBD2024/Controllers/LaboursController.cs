@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,14 @@ namespace NBD2024.Controllers
         }
 
         // GET: LabourTypes
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Index()
         {
               return Redirect(ViewData["returnURL"].ToString());
         }
 
         // GET: LabourTypes/Details/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -45,6 +48,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: LabourTypes/Create
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +59,7 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Create([Bind("ID,Name, Description, Price")] Labour labourType)
         {
             try
@@ -75,6 +80,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: LabourTypes/Edit/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -95,6 +101,7 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Edit(int id)
         {
             var labourToUpdate = await _context.Labours
@@ -134,6 +141,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: LabourTypes/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Labours == null)
@@ -154,6 +162,7 @@ namespace NBD2024.Controllers
         // POST: LabourTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Labours == null)

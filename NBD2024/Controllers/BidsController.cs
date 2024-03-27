@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using NBD2024.ViewModels;
 
 namespace NBD2024.Controllers
 {
+    [Authorize]
     public class BidsController : ElephantController
     {
         private readonly NBDContext _context;
@@ -25,6 +27,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Bids
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Index(int? page, int? pageSizeID, string SearchString, string actionButton, int? MaterialID,
             int? LabourID)
         {
@@ -81,6 +84,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Bids/Details/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bids == null)
@@ -102,6 +106,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Bids/Create
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Create()
         {
             Bid bid = new Bid();
@@ -118,6 +123,7 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Create([Bind("ID,BidDate,LabourHours,ProjectID")] Bid bid,
             string[] selectedOptions)
         {
@@ -147,6 +153,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Bids/Edit/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Bids == null)
@@ -177,7 +184,8 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string[] selectedOptions)
+        [Authorize(Roles = "Admin,Supervisor")]
+        public async Task<IActionResult> Edit(int id, string[] selectedOptions, Byte[] RowVersion)
         {
             var bidToUpdate = await _context.Bids
                 .Include(b => b.BidMaterials).ThenInclude(b => b.Materials)
@@ -191,8 +199,9 @@ namespace NBD2024.Controllers
             }
 
             UpdateBidMaterials(selectedOptions, bidToUpdate);
+            _context.Entry(bidToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
-            if(await TryUpdateModelAsync<Bid>(bidToUpdate, "",
+            if (await TryUpdateModelAsync<Bid>(bidToUpdate, "",
                 b => b.BidDate, b=> b.ProjectID)) 
             {
                 try
@@ -212,7 +221,8 @@ namespace NBD2024.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit"
+                           + "was modified by another user. PLease go back and refresh.");
                     }
                 }
                 catch (DbUpdateException)
@@ -229,6 +239,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Bids/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Bids == null)
@@ -253,6 +264,7 @@ namespace NBD2024.Controllers
         // POST: Bids/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Bids == null)

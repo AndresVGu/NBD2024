@@ -2,7 +2,7 @@
 
 namespace NBD2024.Models
 {
-    public class Bid : IValidatableObject
+    public class Bid : Auditable, IValidatableObject
     {
         public int ID { get; set; }
         public string Total
@@ -32,11 +32,14 @@ namespace NBD2024.Models
         [Display(Name = "Bid Date")]
         [Required(ErrorMessage = "You cannot leave bid date blank.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = false)]
 
         public DateTime BidDate { get; set; } = DateTime.Today;
 
-       
+        //Concurrency:
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[] RowVersion { get; set; }
 
         //Forgien keys
         [Display(Name ="Project")]

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NBD2024.Data;
 using NBD2024.Models;
 using NBD2024.CustomControllers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NBD2024.Controllers
 {
@@ -21,6 +22,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Inventories
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Index()
         {
                
@@ -28,6 +30,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Inventories/Details/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -46,6 +49,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Inventories/Create
+        [Authorize(Roles = "Admin,Supervisor")]
         public IActionResult Create()
         {
             return View();
@@ -83,6 +87,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Inventories/Edit/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -103,6 +108,7 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Edit(int id)
         {
             var inventoryToUpdate = await _context.Materials
@@ -149,6 +155,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Inventories/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Materials == null)
@@ -169,6 +176,7 @@ namespace NBD2024.Controllers
         // POST: Inventories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Materials == null)

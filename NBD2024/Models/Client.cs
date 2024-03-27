@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using NBD2024.CustomControllers;
+using System.ComponentModel.DataAnnotations;
 
 namespace NBD2024.Models
 {
-    public class Client
+   
+    public class Client : Auditable
     {
         public int ID { get; set; }
         #region Summary Properties
@@ -91,7 +94,10 @@ namespace NBD2024.Models
         [StringLength(6, ErrorMessage = "Postal code cannot be more than 6 characters long.")]
         public string PostalCode { get; set; }
 
-
+        //Concurrency:
+        [ScaffoldColumn(false)]
+        [Timestamp]
+        public Byte[] RowVersion { get; set; }
 
         public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 

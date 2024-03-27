@@ -10,9 +10,11 @@ using NBD2024.Models;
 using NBD2024.Utilities;
 using NBD2024.CustomControllers;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NBD2024.Controllers
 {
+    [Authorize]
     public class ClientsController : ElephantController
     { 
         private readonly NBDContext _context;
@@ -21,8 +23,9 @@ namespace NBD2024.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Clients
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Index(string SearchString, int? CityID, 
            int? page, int? pageSizeID, string actionButton, string sortDirection = "asc", string sortField = "Client")
         {
@@ -171,6 +174,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients/Details/5
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -192,6 +196,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public IActionResult Create()
         {
             PopulateDropDownLists();
@@ -203,6 +208,7 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Create([Bind("ID,FirstName, MiddleName,LastName, CompanyName," +
             "Phone,AddressCountry,AddressStreet,CityID,PostalCode,")] Client client, string[] selectedOptions)
         {
@@ -235,6 +241,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients/Edit/5
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -262,7 +269,8 @@ namespace NBD2024.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
+        public async Task<IActionResult> Edit(int id, Byte[] RowVersion)
         {
             var clientToUpdate = await _context.Clients
                 .Include(c => c.City)
@@ -272,6 +280,7 @@ namespace NBD2024.Controllers
             {
                 return NotFound();
             }
+            _context.Entry(clientToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
             if (await TryUpdateModelAsync<Client>(clientToUpdate, "", 
                 c => c.FirstName, c => c.MiddleName,c => c.LastName, 
@@ -297,7 +306,8 @@ namespace NBD2024.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit"
+                           + "was modified by another user. PLease go back and refresh.");
                     }
                 }
                 catch (DbUpdateException)
@@ -313,6 +323,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Clients/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Clients == null)
@@ -335,6 +346,7 @@ namespace NBD2024.Controllers
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Clients == null)

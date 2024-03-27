@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace NBD2024.Models
 {
+   
     public class Project : Auditable, IValidatableObject
     {
         public int ID { get; set; }
@@ -103,14 +105,14 @@ namespace NBD2024.Models
         [Display(Name = "Start Date")]
         [Required(ErrorMessage = "You cannot leave start date blank.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = false)]
           public DateTime StartTime { get; set; }
 
 
         //Estimate Complete Date
         [Display(Name = "Estimated Complete Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = true, NullDisplayText ="Not Completed")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MMM-dd}", ApplyFormatInEditMode = false, NullDisplayText ="Not Completed")]
         public DateTime? EndTime { get; set; }
 
         //Project Site
@@ -137,6 +139,7 @@ namespace NBD2024.Models
         [ScaffoldColumn(false)]
         [Timestamp]
         public Byte[] RowVersion { get; set; }
+        
 
         //Foreign Keys
         #region Foreign Keys:

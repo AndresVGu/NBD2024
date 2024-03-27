@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NBD2024.CustomControllers;
@@ -8,6 +9,7 @@ using NBD2024.Utilities;
 
 namespace NBD2024.Controllers
 {
+    [Authorize]
     public class ProjectBidController : ElephantController
     { 
         private readonly NBDContext _context;
@@ -18,6 +20,7 @@ namespace NBD2024.Controllers
         }
 
         //GET: BID
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Index(int? ProjectID, int? page,DateTime BidDate,
             int? pageSizeID, int? BidID, string actionButton,
             string SearchString, string sortDirection = "desc",

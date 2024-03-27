@@ -103,7 +103,11 @@ namespace NBD2024.Data.NBDMigrations
                     AddressCountry = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     AddressStreet = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     CityID = table.Column<int>(type: "INTEGER", nullable: true),
-                    PostalCode = table.Column<string>(type: "TEXT", maxLength: 6, nullable: false)
+                    PostalCode = table.Column<string>(type: "TEXT", maxLength: 6, nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,7 +131,6 @@ namespace NBD2024.Data.NBDMigrations
                     ProjectSite = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     CityID = table.Column<int>(type: "INTEGER", nullable: true),
                     SetupNotes = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
                     ClientID = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -157,7 +160,11 @@ namespace NBD2024.Data.NBDMigrations
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BidDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ProjectID = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProjectID = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -219,7 +226,7 @@ namespace NBD2024.Data.NBDMigrations
                         column: x => x.LabourID,
                         principalTable: "Labours",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,7 +252,7 @@ namespace NBD2024.Data.NBDMigrations
                         column: x => x.MaterialID,
                         principalTable: "Materials",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

@@ -11,7 +11,7 @@ using NBD2024.Data;
 namespace NBD2024.Data.NBDMigrations
 {
     [DbContext(typeof(NBDContext))]
-    [Migration("20240313083414_Initial")]
+    [Migration("20240327061542_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -29,8 +29,22 @@ namespace NBD2024.Data.NBDMigrations
                     b.Property<DateTime>("BidDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ProjectID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
@@ -131,6 +145,13 @@ namespace NBD2024.Data.NBDMigrations
                         .HasMaxLength(300)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -153,6 +174,13 @@ namespace NBD2024.Data.NBDMigrations
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasMaxLength(6)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -269,11 +297,6 @@ namespace NBD2024.Data.NBDMigrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB");
-
                     b.Property<string>("SetupNotes")
                         .HasMaxLength(3000)
                         .HasColumnType("TEXT");
@@ -365,7 +388,7 @@ namespace NBD2024.Data.NBDMigrations
                     b.HasOne("NBD2024.Models.Labour", "Labours")
                         .WithMany("BidLabours")
                         .HasForeignKey("LabourID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Bid");
@@ -384,7 +407,7 @@ namespace NBD2024.Data.NBDMigrations
                     b.HasOne("NBD2024.Models.Material", "Materials")
                         .WithMany("BidMaterials")
                         .HasForeignKey("MaterialID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Bid");

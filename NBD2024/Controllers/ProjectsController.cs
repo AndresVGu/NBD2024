@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -206,6 +207,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Projects/Details/5
+        [Authorize(Roles ="Admin,Supervisor,Designer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -227,6 +229,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles = "Admin,Supervisor,Designer,Sales")]
         public IActionResult Create()
         {
             var project = new Project();
@@ -238,8 +241,10 @@ namespace NBD2024.Controllers
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor,Designer,Sales")]
         public async Task<IActionResult> Create([Bind("ID,ProjectName,BidDate,StartTime,EndTime,ProjectSite,SetupNotes,CityID,ClientID")] Project project,
             string[]selectedOptions)
         {
@@ -271,6 +276,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -293,8 +299,10 @@ namespace NBD2024.Controllers
         // POST: Projects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor,Designer")]
         public async Task<IActionResult> Edit(int id, string[] selectedOptions,
             Byte[] RowVersion)
         {
@@ -306,6 +314,8 @@ namespace NBD2024.Controllers
             {
                 return NotFound();
             }
+
+            _context.Entry(projectToUpdate).Property("RowVersion").OriginalValue = RowVersion;
 
             if (await TryUpdateModelAsync<Project>(projectToUpdate, "",
                 p => p.ProjectName, p => p.StartTime, p => p.EndTime, p => p.CityID,
@@ -326,7 +336,8 @@ namespace NBD2024.Controllers
                     }
                     else
                     {
-                        throw;
+                        ModelState.AddModelError(string.Empty, "The record you attempted to edit"
+                            + "was modified by another user. PLease go back and refresh.");
                     }
                 }
                 catch (RetryLimitExceededException /* dex */)
@@ -346,6 +357,7 @@ namespace NBD2024.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Projects == null)
@@ -367,8 +379,10 @@ namespace NBD2024.Controllers
         }
 
         // POST: Projects/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Supervisor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Projects == null)
